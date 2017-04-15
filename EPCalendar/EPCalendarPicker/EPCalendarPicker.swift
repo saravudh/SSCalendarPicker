@@ -141,7 +141,7 @@ open class EPCalendarPicker: UICollectionViewController {
 
         //Layout creation
         let layout = UICollectionViewFlowLayout()
-        //layout.sectionHeadersPinToVisibleBounds = true  // If you want make a floating header enable this property(Avaialble after iOS9)
+        layout.sectionHeadersPinToVisibleBounds = true
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 1
         layout.headerReferenceSize = EPDefaults.headerSize
@@ -273,7 +273,7 @@ open class EPCalendarPicker: UICollectionViewController {
             header.lblTitle.textColor = monthTitleColor
             header.updateWeekdaysLabelColor(weekdayTintColor)
             header.updateWeekendLabelColor(weekendTintColor)
-            header.backgroundColor = UIColor.clear
+            header.backgroundColor = UIColor.white
             
             return header;
         }
