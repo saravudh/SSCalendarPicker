@@ -3,6 +3,7 @@
 //  EPCalendar
 //
 //  Created by Prabaharan Elangovan on 02/11/15.
+//  Modified by Saravudh Sinsomros on 17/04/17.
 //  Copyright © 2015 Prabaharan Elangovan. All rights reserved.
 //
 
@@ -40,7 +41,8 @@ public class SSSelectionDate {
     }
     
     convenience init(selectionType: SelectionType, selectedDates: [Date]?) {
-        self.init(selectionType: selectionType, selectedDates: selectedDates, minDate: Date(), maxDate: Date())
+        let hundredYearTimeInterval: Double = 60 * 60 * 24 * 365 * 100
+        self.init(selectionType: selectionType, selectedDates: selectedDates, minDate: Date(timeIntervalSinceNow: -hundredYearTimeInterval), maxDate: Date(timeIntervalSinceNow: hundredYearTimeInterval))
     }
     
     func removeDate(_ aDate: Date) {
@@ -75,21 +77,19 @@ public class SSSelectionDate {
         return true
     }
 
-    var selectedDates: [Date] {
+    var multipleDates: [Date] {
         get {
             return arrSelectedDates.map({$0})
         }
     }
     
-    var startDate: Date? {
-        get {
-            return Date()
-        }
+    var singleDate: Date? {
+        return Date()
     }
     
-    var endDate: Date? {
+    var rangeDate: (Date, Date)? {
         get {
-            return Date()
+            return (Date(), Date())
         }
     }
 }
@@ -268,7 +268,7 @@ open class EPCalendarPicker: UICollectionViewController {
             cell.lblDay.text = "\(currentDate.day())"
             
             
-            if self.selectionDate.selectedDates.filter({ $0.isDateSameDay(currentDate)
+            if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(currentDate)
             }).count > 0 && (firstDayOfThisMonth.month() == currentDate.month()) {
 
                 cell.selectedForLabelColor(dateSelectionColor)
@@ -360,7 +360,7 @@ open class EPCalendarPicker: UICollectionViewController {
         }
         
         if cell.isCellSelectable! {
-            if self.selectionDate.selectedDates.filter({ $0.isDateSameDay(cell.currentDate)
+            if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
             }).count == 0 {
                 self.selectionDate.addDate(cell.currentDate)
                 cell.selectedForLabelColor(dateSelectionColor)
@@ -396,7 +396,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     internal func onTouchDoneButton() {
         //gathers all the selected dates and pass it to the delegate
-        calendarDelegate?.epCalendarPicker!(self, didSelectMultipleDate: self.selectionDate.selectedDates)
+        calendarDelegate?.epCalendarPicker!(self, didSelectMultipleDate: self.selectionDate.multipleDates)
         dismiss(animated: true, completion: nil)
     }
 
