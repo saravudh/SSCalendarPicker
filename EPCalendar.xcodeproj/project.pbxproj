@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7A240121EA334B6001A25CD /* SSDatePickerDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */; };
 		F4C1C9BD1BE7A306001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */; };
 		F4C1C9BF1BE7A306001AA643 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BE1BE7A306001AA643 /* ViewController.swift */; };
 		F4C1C9C21BE7A306001AA643 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9C01BE7A306001AA643 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSDatePickerDataTests.swift; sourceTree = "<group>"; };
 		F4C1C9B91BE7A305001AA643 /* EPCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EPCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4C1C9BE1BE7A306001AA643 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			children = (
 				F4C1C9D11BE7A306001AA643 /* EPCalendarTests.swift */,
 				F4C1C9D31BE7A306001AA643 /* Info.plist */,
+				D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */,
 			);
 			path = EPCalendarTests;
 			sourceTree = "<group>";
@@ -170,7 +173,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0820;
-				ORGANIZATIONNAME = "Prabaharan Elangovan";
+				ORGANIZATIONNAME = "Saravudh Sinsomros";
 				TargetAttributes = {
 					F4C1C9B81BE7A305001AA643 = {
 						CreatedOnToolsVersion = 7.0;
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4C1C9D21BE7A306001AA643 /* EPCalendarTests.swift in Sources */,
+				D7A240121EA334B6001A25CD /* SSDatePickerDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

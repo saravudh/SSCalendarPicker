@@ -12,7 +12,7 @@ struct EPDefaults  {
     //Values
     static let startYear = 2015
     static let endYear = 2016
-    static let multiSelection = false
+    static let selectionType = SelectionType.single
     
     //Colors
     static let dayDisabledTintColor = UIColor.lightGray

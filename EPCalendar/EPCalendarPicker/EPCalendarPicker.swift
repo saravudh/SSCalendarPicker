@@ -16,12 +16,89 @@ private let reuseIdentifier = "Cell"
     @objc optional    func epCalendarPicker(_: EPCalendarPicker, didSelectMultipleDate dates : [Date])
 }
 
+public enum SelectionType: Int {
+    case single
+    case multiple
+    case range
+}
+
+public class SSSelectionDate {
+    private var minDate: Date
+    private var maxDate: Date
+    public var selectionType: SelectionType
+    fileprivate var arrSelectedDates = [Date]()
+
+    init(selectionType: SelectionType, selectedDates: [Date]?, minDate: Date, maxDate: Date) {
+        self.selectionType = selectionType
+        self.minDate = minDate
+        self.maxDate = maxDate
+        if let _ = selectedDates {
+            for date in selectedDates! {
+                self.addDate(date)
+            }
+        }
+    }
+    
+    convenience init(selectionType: SelectionType, selectedDates: [Date]?) {
+        self.init(selectionType: selectionType, selectedDates: selectedDates, minDate: Date(), maxDate: Date())
+    }
+    
+    func removeDate(_ aDate: Date) {
+        switch selectionType {
+        case .single, .multiple:
+            self.arrSelectedDates = self.arrSelectedDates.filter(){
+                return  !($0.isDateSameDay(aDate))
+            }
+        case .range:
+            self.arrSelectedDates.removeAll()
+            self.arrSelectedDates.append(aDate)
+        }
+    }
+    
+    func addDate(_ aDate: Date) {
+        switch selectionType {
+        case .single:
+            self.arrSelectedDates.removeAll()
+            self.arrSelectedDates.append(aDate)
+        case .multiple:
+            if minDate <= aDate && aDate <= maxDate {
+                self.arrSelectedDates.append(aDate)
+                self.arrSelectedDates.sort(by: { $0.compare($1) == .orderedDescending })
+            }
+        case .range:
+            self.arrSelectedDates.removeAll()
+            self.arrSelectedDates.append(aDate)
+        }
+    }
+    
+    func hasData() -> Bool {
+        return true
+    }
+
+    var selectedDates: [Date] {
+        get {
+            return arrSelectedDates.map({$0})
+        }
+    }
+    
+    var startDate: Date? {
+        get {
+            return Date()
+        }
+    }
+    
+    var endDate: Date? {
+        get {
+            return Date()
+        }
+    }
+}
+
 open class EPCalendarPicker: UICollectionViewController {
 
     open var calendarDelegate : EPCalendarPickerDelegate?
-    open var multiSelectEnabled: Bool
+    open var selectionDate: SSSelectionDate
     open var showsTodaysButton: Bool = true
-    fileprivate var arrSelectedDates = [Date]()
     open var tintColor: UIColor
     
     open var dayDisabledTintColor: UIColor
@@ -85,7 +162,7 @@ open class EPCalendarPicker: UICollectionViewController {
 
         var arrayBarButtons  = [UIBarButtonItem]()
         
-        if multiSelectEnabled {
+        if self.selectionDate.selectionType == .multiple {
             let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(EPCalendarPicker.onTouchDoneButton))
             arrayBarButtons.append(doneButton)
         }
@@ -100,34 +177,28 @@ open class EPCalendarPicker: UICollectionViewController {
         
     }
     
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
     public convenience init(){
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, multiSelection: EPDefaults.multiSelection, selectedDates: nil);
+        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: EPDefaults.selectionType, selectedDates: nil);
     }
     
     public convenience init(startYear: Int, endYear: Int) {
-        self.init(startYear:startYear, endYear:endYear, multiSelection: EPDefaults.multiSelection, selectedDates: nil)
+        self.init(startYear:startYear, endYear:endYear, selectionType: EPDefaults.selectionType, selectedDates: nil)
     }
     
-    public convenience init(multiSelection: Bool) {
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, multiSelection: multiSelection, selectedDates: nil)
+    public convenience init(selectionType: SelectionType) {
+        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: selectionType, selectedDates: nil)
     }
     
-    public convenience init(startYear: Int, endYear: Int, multiSelection: Bool) {
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, multiSelection: multiSelection, selectedDates: nil)
+    public convenience init(startYear: Int, endYear: Int, selectionType: SelectionType) {
+        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: selectionType, selectedDates: nil)
     }
     
-    public init(startYear: Int, endYear: Int, multiSelection: Bool, selectedDates: [Date]?) {
+    public init(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
         
         self.startYear = startYear
         self.endYear = endYear
         
-        self.multiSelectEnabled = multiSelection
+        self.selectionDate = SSSelectionDate(selectionType: selectionType, selectedDates: selectedDates)
         
         //Text color initializations
         self.tintColor = EPDefaults.tintColor
@@ -145,9 +216,6 @@ open class EPCalendarPicker: UICollectionViewController {
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 1
         layout.headerReferenceSize = EPDefaults.headerSize
-        if let _ = selectedDates  {
-            self.arrSelectedDates.append(contentsOf: selectedDates!)
-        }
         super.init(collectionViewLayout: layout)
     }
     
@@ -199,7 +267,8 @@ open class EPCalendarPicker: UICollectionViewController {
             cell.currentDate = currentDate
             cell.lblDay.text = "\(currentDate.day())"
             
-            if arrSelectedDates.filter({ $0.isDateSameDay(currentDate)
+            
+            if self.selectionDate.selectedDates.filter({ $0.isDateSameDay(currentDate)
             }).count > 0 && (firstDayOfThisMonth.month() == currentDate.month()) {
 
                 cell.selectedForLabelColor(dateSelectionColor)
@@ -283,7 +352,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
-        if !multiSelectEnabled && cell.isCellSelectable! {
+        if self.selectionDate.selectionType != .multiple && cell.isCellSelectable! {
             calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
             cell.selectedForLabelColor(dateSelectionColor)
             dismiss(animated: true, completion: nil)
@@ -291,9 +360,9 @@ open class EPCalendarPicker: UICollectionViewController {
         }
         
         if cell.isCellSelectable! {
-            if arrSelectedDates.filter({ $0.isDateSameDay(cell.currentDate)
+            if self.selectionDate.selectedDates.filter({ $0.isDateSameDay(cell.currentDate)
             }).count == 0 {
-                arrSelectedDates.append(cell.currentDate)
+                self.selectionDate.addDate(cell.currentDate)
                 cell.selectedForLabelColor(dateSelectionColor)
                 
                 if cell.currentDate.isToday() {
@@ -301,9 +370,7 @@ open class EPCalendarPicker: UICollectionViewController {
                 }
             }
             else {
-                arrSelectedDates = arrSelectedDates.filter(){
-                    return  !($0.isDateSameDay(cell.currentDate))
-                }
+                self.selectionDate.removeDate(cell.currentDate)
                 if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
                     cell.deSelectedForLabelColor(weekendTintColor)
                 }
@@ -329,7 +396,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     internal func onTouchDoneButton() {
         //gathers all the selected dates and pass it to the delegate
-        calendarDelegate?.epCalendarPicker!(self, didSelectMultipleDate: arrSelectedDates)
+        calendarDelegate?.epCalendarPicker!(self, didSelectMultipleDate: self.selectionDate.selectedDates)
         dismiss(animated: true, completion: nil)
     }
 
