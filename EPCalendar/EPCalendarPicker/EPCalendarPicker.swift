@@ -26,11 +26,11 @@ public enum SelectionType: Int {
 public class SSSelectionDate {
     private var minDate: Date
     private var maxDate: Date
-    public var selectionType: SelectionType
+    public var type: SelectionType
     fileprivate var arrSelectedDates = [Date]()
 
     init(selectionType: SelectionType, selectedDates: [Date]?, minDate: Date, maxDate: Date) {
-        self.selectionType = selectionType
+        self.type = selectionType
         self.minDate = minDate
         self.maxDate = maxDate
         if let _ = selectedDates {
@@ -46,50 +46,81 @@ public class SSSelectionDate {
     }
     
     func removeDate(_ aDate: Date) {
-        switch selectionType {
+        switch type {
         case .single, .multiple:
             self.arrSelectedDates = self.arrSelectedDates.filter(){
-                return  !($0.isDateSameDay(aDate))
+                return !($0.isDateSameDay(aDate))
             }
         case .range:
-            self.arrSelectedDates.removeAll()
-            self.arrSelectedDates.append(aDate)
+            if self.arrSelectedDates.contains(aDate) {
+                if self.arrSelectedDates[0] == aDate {
+                    self.arrSelectedDates.removeAll()
+                } else {
+                    self.arrSelectedDates.remove(at: 1)
+                }
+            }
         }
     }
     
     func addDate(_ aDate: Date) {
-        switch selectionType {
-        case .single:
-            self.arrSelectedDates.removeAll()
-            self.arrSelectedDates.append(aDate)
-        case .multiple:
-            if minDate <= aDate && aDate <= maxDate {
-                self.arrSelectedDates.append(aDate)
-                self.arrSelectedDates.sort(by: { $0.compare($1) == .orderedDescending })
+        if aDate >= self.minDate && aDate <= self.maxDate {
+            switch type {
+                case .single:
+                    self.arrSelectedDates.removeAll()
+                    self.arrSelectedDates.append(aDate)
+                case .multiple:
+                    if minDate <= aDate && aDate <= maxDate && !self.arrSelectedDates.contains(aDate) {
+                        self.arrSelectedDates.append(aDate)
+                        self.arrSelectedDates.sort(by: { $0.compare($1) == .orderedDescending })
+                    }
+                case .range:
+                    if self.arrSelectedDates.count == 0 {
+                        self.arrSelectedDates.append(aDate)
+                    } else if self.arrSelectedDates.count == 1 {
+                        if aDate < self.arrSelectedDates[0] {
+                            self.arrSelectedDates[0] = aDate
+                        } else if aDate > self.arrSelectedDates[0] {
+                            self.arrSelectedDates.append(aDate)
+                        }
+                    } else if self.arrSelectedDates.count > 1 {
+                        if aDate < self.arrSelectedDates[0] {
+                            self.arrSelectedDates[0] = aDate
+                        } else if aDate > self.arrSelectedDates[0] {
+                            self.arrSelectedDates[1] = aDate
+                        }
+                    }
             }
-        case .range:
-            self.arrSelectedDates.removeAll()
-            self.arrSelectedDates.append(aDate)
         }
     }
     
+    func removeAll() {
+        self.arrSelectedDates.removeAll()
+    }
+    
     func hasData() -> Bool {
-        return true
+        return self.arrSelectedDates.count > 0
     }
 
     var multipleDates: [Date] {
         get {
-            return arrSelectedDates.map({$0})
+            return self.type == .multiple ? arrSelectedDates.map({$0}) : [Date]()
         }
     }
     
     var singleDate: Date? {
-        return Date()
+        return self.hasData() ? self.arrSelectedDates[0] : nil
     }
     
-    var rangeDate: (Date, Date)? {
+    var rangeDate: (begin: Date, end: Date?)? {
         get {
-            return (Date(), Date())
+            if self.type == .range {
+                if self.arrSelectedDates.count > 1 {
+                    return (begin: self.arrSelectedDates[0], end: self.arrSelectedDates[1])
+                } else if self.arrSelectedDates.count > 0 {
+                    return (begin: self.arrSelectedDates[0], end: nil)
+                }
+            }
+            return nil
         }
     }
 }
@@ -162,7 +193,7 @@ open class EPCalendarPicker: UICollectionViewController {
 
         var arrayBarButtons  = [UIBarButtonItem]()
         
-        if self.selectionDate.selectionType == .multiple {
+        if self.selectionDate.type == .multiple {
             let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(EPCalendarPicker.onTouchDoneButton))
             arrayBarButtons.append(doneButton)
         }
@@ -352,7 +383,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
-        if self.selectionDate.selectionType != .multiple && cell.isCellSelectable! {
+        if self.selectionDate.type != .multiple && cell.isCellSelectable! {
             calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
             cell.selectedForLabelColor(dateSelectionColor)
             dismiss(animated: true, completion: nil)
