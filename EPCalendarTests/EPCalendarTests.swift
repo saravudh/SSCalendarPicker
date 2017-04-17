@@ -22,8 +22,7 @@ class EPCalendarTests: XCTestCase {
     }
     
     func test1 () {
-        
-        let calendarPicker = EPCalendarPicker(startYear: 2000, endYear: 2001, multiSelection: true)
+        let calendarPicker = EPCalendarPicker(startYear: 2000, endYear: 2001, selectionType: .multiple)
         let navigationController = UINavigationController(rootViewController: calendarPicker)
         UIViewController().present(navigationController, animated: true, completion: nil)
         
