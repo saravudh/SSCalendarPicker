@@ -40,10 +40,10 @@ open class EPCalendarPicker: UICollectionViewController {
     
     fileprivate(set) open var startYear: Int
     fileprivate(set) open var endYear: Int
+    private var selectedCell: Set<IndexPath>
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        
         // setup Navigationbar
         self.navigationController?.navigationBar.tintColor = self.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
@@ -113,10 +113,9 @@ open class EPCalendarPicker: UICollectionViewController {
     }
     
     public init(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
-        
         self.startYear = startYear
         self.endYear = endYear
-        
+        self.selectedCell = Set()
         self.selectionDate = SSSelectionDate(selectionType: selectionType, selectedDates: selectedDates)
         
         //Text color initializations
@@ -188,16 +187,16 @@ open class EPCalendarPicker: UICollectionViewController {
                 case .single:
                     break
                 case .multiple:
-                    cell.selectedForLabelColor()
+                    self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
                 case .range:
                     if self.selectionDate.isIntervalSelectedDate(date: currentDate) {
-                        cell.selectedIntervalCellForLabelColor()
+                        self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: true)
                     } else {
-                        cell.selectedForLabelColor()
+                        self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
                     }
                 }
             } else {
-                cell.deSelectedForLabelColor()
+                self.deSelectedForLabelColor()
                 if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
                     cell.lblDay.textColor = weekendTintColor
                 }
@@ -221,7 +220,7 @@ open class EPCalendarPicker: UICollectionViewController {
                 }
             }
         } else {
-            cell.deSelectedForLabelColor()
+            self.deSelectedForLabelColor()
             cell.isCellSelectable = false
             let previousDay = firstDayOfThisMonth.dateByAddingDays(-( prefixDays - indexPath.row))
             cell.currentDate = previousDay
@@ -275,14 +274,14 @@ open class EPCalendarPicker: UICollectionViewController {
             switch self.selectionDate.type {
             case .single:
                 calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
-                cell.selectedForLabelColor()
+                self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
                 dismiss(animated: true, completion: nil)
                 return
             case .multiple:
                 if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
                 }).count == 0 {
                     self.selectionDate.addDate(cell.currentDate)
-                    cell.selectedForLabelColor()
+                    self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
                     if cell.currentDate.isToday() {
                         cell.setTodayCellColor(EPDefaults.dateSelectionColor)
                     }
@@ -290,9 +289,9 @@ open class EPCalendarPicker: UICollectionViewController {
                 else {
                     self.selectionDate.removeDate(cell.currentDate)
                     if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
-                        cell.deSelectedForLabelColor()
+                        self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
                     } else {
-                        cell.deSelectedForLabelColor()
+                        self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
                     }
                     if cell.currentDate.isToday() && hightlightsToday{
                         cell.setTodayCellColor(todayTintColor)
@@ -300,9 +299,23 @@ open class EPCalendarPicker: UICollectionViewController {
                 }
             case .range:
                 self.selectionDate.addDate(cell.currentDate)
-//                self.collectionView?.reloadSections(indexPath.section)
+                self.collectionView?.reloadSections([indexPath.section])
             }
         }
+    }
+    
+    private func selectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath, isIntervalCell: Bool) {
+        if isIntervalCell {
+            cell.selectedIntervalCellForLabelColor()
+        } else {
+            cell.selectedForLabelColor()
+        }
+        self.selectedCell.insert(indexPath)
+    }
+    
+    private func deSelectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath) {
+        cell.deSelectedForLabelColor()
+        self.selectedCell.remove(indexPath)
     }
     
     //MARK: Button Actions
