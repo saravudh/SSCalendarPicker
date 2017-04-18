@@ -3,7 +3,7 @@
 //  EPCalendar
 //
 //  Created by Prabaharan Elangovan on 02/11/15.
-//  Modified by Saravudh Sinsomros on 17/04/17.
+//  Modified by Saravudh Sinsomros on Apr 17, 2017.
 //  Copyright © 2015 Prabaharan Elangovan. All rights reserved.
 //
 
@@ -25,10 +25,8 @@ open class EPCalendarPicker: UICollectionViewController {
     open var tintColor: UIColor
     
     open var dayDisabledTintColor: UIColor
-    open var weekdayTintColor: UIColor
     open var weekendTintColor: UIColor
     open var todayTintColor: UIColor
-    open var dateSelectionColor: UIColor
     open var monthTitleColor: UIColor
     
     // new options
@@ -125,9 +123,7 @@ open class EPCalendarPicker: UICollectionViewController {
         self.tintColor = EPDefaults.tintColor
         self.barTintColor = EPDefaults.barTintColor
         self.dayDisabledTintColor = EPDefaults.dayDisabledTintColor
-        self.weekdayTintColor = EPDefaults.weekdayTintColor
         self.weekendTintColor = EPDefaults.weekendTintColor
-        self.dateSelectionColor = EPDefaults.dateSelectionColor
         self.monthTitleColor = EPDefaults.monthTitleColor
         self.todayTintColor = EPDefaults.todayTintColor
 
@@ -188,9 +184,20 @@ open class EPCalendarPicker: UICollectionViewController {
             cell.lblDay.text = "\(currentDate.day())"
             let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
             if self.selectionDate.isSelectedDate(date: currentDate) && !isCellDateIsPresentDateFromNextMonth {
-                cell.selectedForLabelColor(dateSelectionColor)
+                switch self.selectionDate.type {
+                case .single:
+                    break
+                case .multiple:
+                    cell.selectedForLabelColor()
+                case .range:
+                    if self.selectionDate.isIntervalSelectedDate(date: currentDate) {
+                        cell.selectedIntervalCellForLabelColor()
+                    } else {
+                        cell.selectedForLabelColor()
+                    }
+                }
             } else {
-                cell.deSelectedForLabelColor(weekdayTintColor)
+                cell.deSelectedForLabelColor()
                 if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
                     cell.lblDay.textColor = weekendTintColor
                 }
@@ -214,7 +221,7 @@ open class EPCalendarPicker: UICollectionViewController {
                 }
             }
         } else {
-            cell.deSelectedForLabelColor(weekdayTintColor)
+            cell.deSelectedForLabelColor()
             cell.isCellSelectable = false
             let previousDay = firstDayOfThisMonth.dateByAddingDays(-( prefixDays - indexPath.row))
             cell.currentDate = previousDay
@@ -252,7 +259,7 @@ open class EPCalendarPicker: UICollectionViewController {
             
             header.lblTitle.text = firstDayOfMonth.monthNameFull()
             header.lblTitle.textColor = monthTitleColor
-            header.updateWeekdaysLabelColor(weekdayTintColor)
+            header.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
             header.updateWeekendLabelColor(weekendTintColor)
             header.backgroundColor = UIColor.white
             
@@ -268,24 +275,24 @@ open class EPCalendarPicker: UICollectionViewController {
             switch self.selectionDate.type {
             case .single:
                 calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
-                cell.selectedForLabelColor(dateSelectionColor)
+                cell.selectedForLabelColor()
                 dismiss(animated: true, completion: nil)
                 return
             case .multiple:
                 if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
                 }).count == 0 {
                     self.selectionDate.addDate(cell.currentDate)
-                    cell.selectedForLabelColor(dateSelectionColor)
+                    cell.selectedForLabelColor()
                     if cell.currentDate.isToday() {
-                        cell.setTodayCellColor(dateSelectionColor)
+                        cell.setTodayCellColor(EPDefaults.dateSelectionColor)
                     }
                 }
                 else {
                     self.selectionDate.removeDate(cell.currentDate)
                     if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
-                        cell.deSelectedForLabelColor(weekendTintColor)
+                        cell.deSelectedForLabelColor()
                     } else {
-                        cell.deSelectedForLabelColor(weekdayTintColor)
+                        cell.deSelectedForLabelColor()
                     }
                     if cell.currentDate.isToday() && hightlightsToday{
                         cell.setTodayCellColor(todayTintColor)

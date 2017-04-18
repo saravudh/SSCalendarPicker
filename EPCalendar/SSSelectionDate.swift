@@ -116,6 +116,17 @@ public class SSSelectionDate {
     }
     
     func isSelectedDate(date: Date) -> Bool {
-        return self.arrSelectedDates.contains(date)
+        let isSelectedDate = self.arrSelectedDates.contains(date)
+        if !isSelectedDate && self.type == .range {
+            return self.isIntervalSelectedDate(date:date)
+        }
+        return isSelectedDate
+    }
+    
+    func isIntervalSelectedDate(date: Date) -> Bool {
+        if self.type == .range, let rangeDate = self.rangeDate, let rangeDateEnd = rangeDate.end {
+            return date > rangeDate.begin && date < rangeDateEnd
+        }
+        return false
     }
 }

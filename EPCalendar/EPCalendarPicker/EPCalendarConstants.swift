@@ -19,6 +19,7 @@ struct EPDefaults  {
     static let weekdayTintColor = EPColors.EmeraldColor
     static let weekendTintColor = EPColors.PomegranateColor
     static let dateSelectionColor = EPColors.PeterRiverColor
+    static let intervalDateSelectionColor = EPColors.PeterRiverLightColor
     static let monthTitleColor = EPColors.PumpkinColor
     static let todayTintColor = EPColors.AmethystColor
     
@@ -42,6 +43,7 @@ struct EPColors{
     static let AsbestosColor = UIColor(red: (127/255), green: (140/255), blue: (141/255), alpha: 1.0)
     static let AmethystColor = UIColor(red: (155/255), green: (89/255), blue: (182/255), alpha: 1.0)
     static let PeterRiverColor = UIColor(red: (52/255), green: (152/255), blue: (219/255), alpha: 1.0)
+    static let PeterRiverLightColor = UIColor(red: (100/255), green: (200/255), blue: (255/255), alpha: 1.0)
     static let PomegranateColor = UIColor(red: (192/255), green: (57/255), blue: (43/255), alpha: 1.0)
 }
 

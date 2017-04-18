@@ -3,6 +3,7 @@
 //  EPCalendar
 //
 //  Created by Prabaharan Elangovan on 09/11/15.
+//  Modified by Saravudh Sinsomros on Apr 18, 2017
 //  Copyright © 2015 Prabaharan Elangovan. All rights reserved.
 //
 
@@ -18,13 +19,22 @@ class EPCalendarCell1: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-    func selectedForLabelColor(_ color: UIColor) {
+    func selectedForLabelColor() {
+        let color = EPDefaults.dateSelectionColor
+        self.lblDay.layer.cornerRadius = self.lblDay.frame.size.width/2
+        self.lblDay.layer.backgroundColor = color.cgColor
+        self.lblDay.textColor = UIColor.white
+    }
+
+    func selectedIntervalCellForLabelColor() {
+        let color = EPDefaults.intervalDateSelectionColor
         self.lblDay.layer.cornerRadius = self.lblDay.frame.size.width/2
         self.lblDay.layer.backgroundColor = color.cgColor
         self.lblDay.textColor = UIColor.white
     }
     
-    func deSelectedForLabelColor(_ color: UIColor) {
+    func deSelectedForLabelColor() {
+        let color = EPDefaults.weekdayTintColor
         self.lblDay.layer.backgroundColor = UIColor.clear.cgColor
         self.lblDay.textColor = color
     }
