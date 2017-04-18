@@ -78,8 +78,6 @@ open class EPCalendarPicker: UICollectionViewController {
 
     
     func inititlizeBarButtons(){
-        
-
         let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(EPCalendarPicker.onTouchCancelButton))
         self.navigationItem.leftBarButtonItem = cancelButton
 
@@ -175,7 +173,6 @@ open class EPCalendarPicker: UICollectionViewController {
     }
 
     override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EPCalendarCell1
         
         let calendarStartDate = Date(year:startYear, month: 1, day: 1)
@@ -189,16 +186,11 @@ open class EPCalendarPicker: UICollectionViewController {
             
             cell.currentDate = currentDate
             cell.lblDay.text = "\(currentDate.day())"
-            
-            
-            if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(currentDate)
-            }).count > 0 && (firstDayOfThisMonth.month() == currentDate.month()) {
-
+            let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
+            if self.selectionDate.isSelectedDate(date: currentDate) && !isCellDateIsPresentDateFromNextMonth {
                 cell.selectedForLabelColor(dateSelectionColor)
-            }
-            else{
+            } else {
                 cell.deSelectedForLabelColor(weekdayTintColor)
-               
                 if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
                     cell.lblDay.textColor = weekendTintColor
                 }
@@ -221,8 +213,7 @@ open class EPCalendarPicker: UICollectionViewController {
                     }
                 }
             }
-        }
-        else {
+        } else {
             cell.deSelectedForLabelColor(weekdayTintColor)
             cell.isCellSelectable = false
             let previousDay = firstDayOfThisMonth.dateByAddingDays(-( prefixDays - indexPath.row))
@@ -240,16 +231,14 @@ open class EPCalendarPicker: UICollectionViewController {
     }
 
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize
-    {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
         let rect = UIScreen.main.bounds
         let screenWidth = rect.size.width - 7
         return CGSize(width: screenWidth/7, height: screenWidth/7);
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets
-    {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(5, 0, 5, 0); //top,left,bottom,right
     }
     
@@ -275,37 +264,38 @@ open class EPCalendarPicker: UICollectionViewController {
     
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
-        if self.selectionDate.type != .multiple && cell.isCellSelectable! {
-            calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
-            cell.selectedForLabelColor(dateSelectionColor)
-            dismiss(animated: true, completion: nil)
-            return
-        }
-        
         if cell.isCellSelectable! {
-            if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
-            }).count == 0 {
-                self.selectionDate.addDate(cell.currentDate)
+            switch self.selectionDate.type {
+            case .single:
+                calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
                 cell.selectedForLabelColor(dateSelectionColor)
-                
-                if cell.currentDate.isToday() {
-                    cell.setTodayCellColor(dateSelectionColor)
-                }
-            }
-            else {
-                self.selectionDate.removeDate(cell.currentDate)
-                if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
-                    cell.deSelectedForLabelColor(weekendTintColor)
+                dismiss(animated: true, completion: nil)
+                return
+            case .multiple:
+                if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
+                }).count == 0 {
+                    self.selectionDate.addDate(cell.currentDate)
+                    cell.selectedForLabelColor(dateSelectionColor)
+                    if cell.currentDate.isToday() {
+                        cell.setTodayCellColor(dateSelectionColor)
+                    }
                 }
                 else {
-                    cell.deSelectedForLabelColor(weekdayTintColor)
+                    self.selectionDate.removeDate(cell.currentDate)
+                    if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
+                        cell.deSelectedForLabelColor(weekendTintColor)
+                    } else {
+                        cell.deSelectedForLabelColor(weekdayTintColor)
+                    }
+                    if cell.currentDate.isToday() && hightlightsToday{
+                        cell.setTodayCellColor(todayTintColor)
+                    }
                 }
-                if cell.currentDate.isToday() && hightlightsToday{
-                    cell.setTodayCellColor(todayTintColor)
-                }
+            case .range:
+                self.selectionDate.addDate(cell.currentDate)
+//                self.collectionView?.reloadSections(indexPath.section)
             }
         }
-        
     }
     
     //MARK: Button Actions

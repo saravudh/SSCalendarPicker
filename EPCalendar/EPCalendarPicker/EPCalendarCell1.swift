@@ -29,9 +29,7 @@ class EPCalendarCell1: UICollectionViewCell {
         self.lblDay.textColor = color
     }
     
-    
-    func setTodayCellColor(_ backgroundColor: UIColor) {
-        
+    func setTodayCellColor(_ backgroundColor: UIColor) {   
         self.lblDay.layer.cornerRadius = self.lblDay.frame.size.width/2
         self.lblDay.layer.backgroundColor = backgroundColor.cgColor
         self.lblDay.textColor  = UIColor.white

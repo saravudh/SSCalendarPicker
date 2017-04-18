@@ -114,4 +114,8 @@ public class SSSelectionDate {
             return nil
         }
     }
+    
+    func isSelectedDate(date: Date) -> Bool {
+        return self.arrSelectedDates.contains(date)
+    }
 }
