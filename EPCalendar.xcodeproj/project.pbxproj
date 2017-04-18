@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D79623BC1EA5BAD000D3E53E /* SSSelectionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */; };
 		D7A240121EA334B6001A25CD /* SSDatePickerDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */; };
 		F4C1C9BD1BE7A306001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */; };
 		F4C1C9BF1BE7A306001AA643 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BE1BE7A306001AA643 /* ViewController.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSSelectionDate.swift; sourceTree = "<group>"; };
 		D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSDatePickerDataTests.swift; sourceTree = "<group>"; };
 		F4C1C9B91BE7A305001AA643 /* EPCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EPCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				F4F542C01BF0864900749161 /* EPCalendarHeaderView.swift */,
 				F4F542C11BF0864900749161 /* EPCalendarHeaderView.xib */,
 				F4D8C5BC1C0ABCC500F1F769 /* EPExtensions.swift */,
+				D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */,
 			);
 			name = EPCalendarPicker;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			files = (
 				F4F542C21BF0864900749161 /* EPCalendarHeaderView.swift in Sources */,
 				F4C1C9E11BE7A5B4001AA643 /* EPCalendarConstants.swift in Sources */,
+				D79623BC1EA5BAD000D3E53E /* SSSelectionDate.swift in Sources */,
 				F4D8C5BD1C0ABCC500F1F769 /* EPExtensions.swift in Sources */,
 				F4C1C9BF1BE7A306001AA643 /* ViewController.swift in Sources */,
 				F4F542BE1BF064AA00749161 /* EPCalendarCell1.swift in Sources */,
