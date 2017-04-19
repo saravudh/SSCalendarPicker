@@ -194,10 +194,14 @@ open class EPCalendarPicker: UICollectionViewController {
                 }
             } else  if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
                 cell.type = .weekend
+            } else {
+                cell.type = .weekday
             }
             
             if currentDate.isToday() && hightlightsToday {
                 cell.isToday = true
+            } else {
+                cell.isToday = false
             }
             
             // end set cell type

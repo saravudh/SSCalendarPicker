@@ -43,7 +43,7 @@ class EPCalendarCell1: UICollectionViewCell {
     @IBOutlet weak var lblDay: UILabel!
     
     required public init?(coder aDecoder: NSCoder) {
-        self.type = SSCalendarCellType.hidden
+        self.type = .hidden
         super.init(coder: aDecoder)
     }
     
