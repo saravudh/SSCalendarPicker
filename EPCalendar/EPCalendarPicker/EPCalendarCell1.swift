@@ -9,24 +9,34 @@
 
 import UIKit
 
-struct SSCalendarCellType {
-    let textColor: UIColor
-    var bgColor: UIColor
-    static let today = SSCalendarCellType(textColor: UIColor.white, bgColor: EPDefaults.todayTintColor)
-    static let weekend = SSCalendarCellType(textColor: EPDefaults.weekendTintColor, bgColor: UIColor.clear)
-    static let weekday = SSCalendarCellType(textColor: EPDefaults.weekdayTintColor, bgColor: UIColor.clear)
-    static let disable = SSCalendarCellType(textColor: EPDefaults.dayDisabledTintColor, bgColor: UIColor.clear)
-    static let hidden = SSCalendarCellType(textColor: UIColor.clear, bgColor: UIColor.clear)
+enum SSCalendarCellType {
+    case weekend
+    case weekday
+    case disable
+    case hidden
 }
 
 class EPCalendarCell1: UICollectionViewCell {
+    let PREDEFINED_CELL_COLOR:[SSCalendarCellType: (textColor: UIColor, bgColor:UIColor)] = [
+        SSCalendarCellType.weekend: (textColor: EPDefaults.weekendTintColor, bgColor: UIColor.clear),
+        SSCalendarCellType.weekday: (textColor: EPDefaults.weekdayTintColor, bgColor: UIColor.clear),
+        SSCalendarCellType.disable: (textColor: EPDefaults.dayDisabledTintColor, bgColor: UIColor.clear),
+        SSCalendarCellType.hidden: (textColor: UIColor.clear, bgColor: UIColor.clear)
+    ]
+    let TODAY_CELL_COLOR = (textColor: UIColor.white, bgColor: EPDefaults.todayTintColor)
 
+    var isToday: Bool = false
     var currentDate: Date!
     var isCellSelectable: Bool?
     var type: SSCalendarCellType {
         didSet {
-            self.lblDay.layer.backgroundColor = self.type.bgColor.cgColor
-            self.lblDay.textColor = self.type.textColor
+            self.lblDay.layer.backgroundColor = PREDEFINED_CELL_COLOR[self.type]!.bgColor.cgColor
+            self.lblDay.textColor = PREDEFINED_CELL_COLOR[self.type]!.textColor
+            if self.type == .disable {
+                self.isCellSelectable = false
+            } else {
+                self.isCellSelectable = true
+            }
         }
     }
     
@@ -35,10 +45,6 @@ class EPCalendarCell1: UICollectionViewCell {
     required public init?(coder aDecoder: NSCoder) {
         self.type = SSCalendarCellType.hidden
         super.init(coder: aDecoder)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
     }
     
     func selectedForLabelColor() {
@@ -56,7 +62,12 @@ class EPCalendarCell1: UICollectionViewCell {
     }
     
     func deSelectedForLabelColor() {
-        self.lblDay.layer.backgroundColor = self.type.bgColor.cgColor
-        self.lblDay.textColor = self.type.textColor
+        if self.isToday {
+            self.lblDay.layer.backgroundColor = TODAY_CELL_COLOR.bgColor.cgColor
+            self.lblDay.textColor = TODAY_CELL_COLOR.textColor
+        } else {
+            self.lblDay.layer.backgroundColor = PREDEFINED_CELL_COLOR[self.type]!.bgColor.cgColor
+            self.lblDay.textColor = PREDEFINED_CELL_COLOR[self.type]!.textColor
+        }
     }
 }

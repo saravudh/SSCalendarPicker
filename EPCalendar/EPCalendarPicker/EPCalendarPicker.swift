@@ -172,15 +172,36 @@ open class EPCalendarPicker: UICollectionViewController {
         
         let calendarStartDate = Date(year:startYear, month: 1, day: 1)
         let firstDayOfThisMonth = calendarStartDate.dateByAddingMonths(indexPath.section)
-        let prefixDays = ( firstDayOfThisMonth.weekday() - Calendar.current.firstWeekday)
+        let prefixDays = (firstDayOfThisMonth.weekday() - Calendar.current.firstWeekday)
         
         if indexPath.row >= prefixDays {
             cell.isCellSelectable = true
             let currentDate = firstDayOfThisMonth.dateByAddingDays(indexPath.row-prefixDays)
             let nextMonthFirstDay = firstDayOfThisMonth.dateByAddingDays(firstDayOfThisMonth.numberOfDaysInMonth()-1)
-            
             cell.currentDate = currentDate
             cell.lblDay.text = "\(currentDate.day())"
+            
+            // set cell type
+            
+            if startDate != nil && Calendar.current.startOfDay(for: cell.currentDate as Date) < Calendar.current.startOfDay(for: startDate!) {
+                cell.type = .disable
+            } else if (currentDate > nextMonthFirstDay) {
+                cell.isCellSelectable = false
+                if hideDaysFromOtherMonth {
+                    cell.type = .hidden
+                } else {
+                    cell.type = .disable
+                }
+            } else  if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
+                cell.type = .weekend
+            }
+            
+            if currentDate.isToday() && hightlightsToday {
+                cell.isToday = true
+            }
+            
+            // end set cell type
+            
             let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
             if self.selectionDate.isSelectedDate(date: currentDate) && !isCellDateIsPresentDateFromNextMonth {
                 switch self.selectionDate.type {
@@ -196,31 +217,10 @@ open class EPCalendarPicker: UICollectionViewController {
                     }
                 }
             } else {
-                self.deSelectedForLabelColor()
-                if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
-                    cell.lblDay.textColor = weekendTintColor
-                }
-                if (currentDate > nextMonthFirstDay) {
-                    cell.isCellSelectable = false
-                    if hideDaysFromOtherMonth {
-                        cell.lblDay.textColor = UIColor.clear
-                    } else {
-                        cell.lblDay.textColor = self.dayDisabledTintColor
-                    }
-                }
-                if currentDate.isToday() && hightlightsToday {
-                    cell.setTodayCellColor(todayTintColor)
-                }
-               
-                if startDate != nil {
-                    if Calendar.current.startOfDay(for: cell.currentDate as Date) < Calendar.current.startOfDay(for: startDate!) {
-                        cell.isCellSelectable = false
-                        cell.lblDay.textColor = self.dayDisabledTintColor
-                    }
-                }
+                self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
             }
         } else {
-            self.deSelectedForLabelColor()
+            self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
             cell.isCellSelectable = false
             let previousDay = firstDayOfThisMonth.dateByAddingDays(-( prefixDays - indexPath.row))
             cell.currentDate = previousDay
@@ -282,20 +282,9 @@ open class EPCalendarPicker: UICollectionViewController {
                 }).count == 0 {
                     self.selectionDate.addDate(cell.currentDate)
                     self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
-                    if cell.currentDate.isToday() {
-                        cell.setTodayCellColor(EPDefaults.dateSelectionColor)
-                    }
-                }
-                else {
+                } else {
                     self.selectionDate.removeDate(cell.currentDate)
-                    if cell.currentDate.isSaturday() || cell.currentDate.isSunday() {
-                        self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
-                    } else {
-                        self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
-                    }
-                    if cell.currentDate.isToday() && hightlightsToday{
-                        cell.setTodayCellColor(todayTintColor)
-                    }
+                    self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
                 }
             case .range:
                 self.selectionDate.addDate(cell.currentDate)
