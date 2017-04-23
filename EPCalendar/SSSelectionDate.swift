@@ -15,8 +15,7 @@ public enum SelectionType: Int {
 }
 
 public enum SSSelectedType: Int {
-    case selected
-    case start
+    case startOrSelected
     case between
     case end
     case unselected
@@ -128,10 +127,10 @@ public class SSSelectionDate {
         if isSelectedDate {
             switch self.type {
             case .single, .multiple:
-                return .selected
+                return .startOrSelected
             case .range:
                 if self.arrSelectedDates[0] == date {
-                    return .start
+                    return .startOrSelected
                 } else if self.arrSelectedDates.count == 2 && self.arrSelectedDates[1] == date {
                     return .end
                 }
