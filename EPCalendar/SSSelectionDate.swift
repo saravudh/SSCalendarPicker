@@ -15,7 +15,7 @@ public enum SelectionType: Int {
 }
 
 public enum SSSelectedType: Int {
-    case startOrSelected
+    case beginOrSelected
     case between
     case end
     case unselected
@@ -80,11 +80,19 @@ public class SSSelectionDate {
                     } else if aDate > self.arrSelectedDates[0] {
                         self.arrSelectedDates.append(aDate)
                     }
-                } else if self.arrSelectedDates.count > 1 {
+                } else if self.arrSelectedDates.count == 2 {
                     if aDate < self.arrSelectedDates[0] {
                         self.arrSelectedDates[0] = aDate
-                    } else if aDate > self.arrSelectedDates[0] {
+                    } else if aDate > self.arrSelectedDates[1] {
                         self.arrSelectedDates[1] = aDate
+                    } else if aDate != self.arrSelectedDates[0] || aDate != self.arrSelectedDates[1] {
+                        let distanceFromBegin = NSCalendar.current.dateComponents([.day], from: self.arrSelectedDates[0], to: aDate)
+                        let distanceToEnd = NSCalendar.current.dateComponents([.day], from: aDate, to: self.arrSelectedDates[1])
+                        if distanceFromBegin.day! < distanceToEnd.day! {
+                            self.arrSelectedDates[0] = aDate
+                        } else {
+                            self.arrSelectedDates[1] = aDate
+                        }
                     }
                 }
             }
@@ -127,10 +135,10 @@ public class SSSelectionDate {
         if isSelectedDate {
             switch self.type {
             case .single, .multiple:
-                return .startOrSelected
+                return .beginOrSelected
             case .range:
                 if self.arrSelectedDates[0] == date {
-                    return .startOrSelected
+                    return .beginOrSelected
                 } else if self.arrSelectedDates.count == 2 && self.arrSelectedDates[1] == date {
                     return .end
                 }

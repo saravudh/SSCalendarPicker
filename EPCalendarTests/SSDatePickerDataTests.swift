@@ -174,6 +174,57 @@ class SSDatePickerDataTests: XCTestCase {
         XCTAssertEqual(date2, rangeDate31.end)
     }
     
+    func testRangeDataAddBetweenData() {
+        let date1 = Date(year : 2017, month : 1, day : 1)
+        let date2 = Date(year : 2017, month : 1, day : 2)
+        let date3 = Date(year : 2017, month : 1, day : 3)
+        let date4 = Date(year : 2017, month : 1, day : 4)
+        let date5 = Date(year : 2017, month : 1, day : 5)
+        let date6 = Date(year : 2017, month : 1, day : 6)
+        let date7 = Date(year : 2017, month : 1, day : 7)
+        
+        let selectionDate1 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        selectionDate1.addDate(date1)
+        selectionDate1.addDate(date7)
+        selectionDate1.addDate(date2)
+        let rangeDate1 = selectionDate1.rangeDate!
+        XCTAssertEqual(date2, rangeDate1.begin)
+        XCTAssertEqual(date7, rangeDate1.end)
+        
+
+        let selectionDate2 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        selectionDate2.addDate(date1)
+        selectionDate2.addDate(date7)
+        selectionDate2.addDate(date3)
+        let rangeDate2 = selectionDate2.rangeDate!
+        XCTAssertEqual(date3, rangeDate2.begin)
+        XCTAssertEqual(date7, rangeDate2.end)
+
+        let selectionDate3 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        selectionDate3.addDate(date1)
+        selectionDate3.addDate(date7)
+        selectionDate3.addDate(date4)
+        let rangeDate3 = selectionDate3.rangeDate!
+        XCTAssertEqual(date1, rangeDate3.begin)
+        XCTAssertEqual(date4, rangeDate3.end)
+
+        let selectionDate4 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        selectionDate4.addDate(date1)
+        selectionDate4.addDate(date7)
+        selectionDate4.addDate(date5)
+        let rangeDate4 = selectionDate4.rangeDate!
+        XCTAssertEqual(date1, rangeDate4.begin)
+        XCTAssertEqual(date5, rangeDate4.end)
+
+        let selectionDate5 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        selectionDate5.addDate(date1)
+        selectionDate5.addDate(date7)
+        selectionDate5.addDate(date6)
+        let rangeDate5 = selectionDate5.rangeDate!
+        XCTAssertEqual(date1, rangeDate5.begin)
+        XCTAssertEqual(date6, rangeDate5.end)
+    }
+    
     func testRangeRemoveData() {
         let date1 = Date(year : 2017, month : 1, day : 1)
         let date2 = Date(year : 2017, month : 2, day : 1)
@@ -262,7 +313,7 @@ class SSDatePickerDataTests: XCTestCase {
         let unexpected = Date(year : 2017, month : 1, day : 2)
         let selectionDate = SSSelectionDate(selectionType: .single, selectedDates: nil, minDate: minDate, maxDate: maxDate)
         selectionDate.addDate(date)
-        XCTAssertEqual(SSSelectedType.startOrSelected, selectionDate.isSelectedDate(date: expected))
+        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected))
         XCTAssertEqual(SSSelectedType.unselected, selectionDate.isSelectedDate(date: unexpected))
     }
     
@@ -277,8 +328,8 @@ class SSDatePickerDataTests: XCTestCase {
         let selectionDate = SSSelectionDate(selectionType: .multiple, selectedDates: nil, minDate: minDate, maxDate: maxDate)
         selectionDate.addDate(date1)
         selectionDate.addDate(date2)
-        XCTAssertEqual(SSSelectedType.startOrSelected, selectionDate.isSelectedDate(date: expected1))
-        XCTAssertEqual(SSSelectedType.startOrSelected, selectionDate.isSelectedDate(date: expected2))
+        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected1))
+        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected2))
         XCTAssertEqual(SSSelectedType.unselected, selectionDate.isSelectedDate(date: unexpected))
     }
     
@@ -298,7 +349,7 @@ class SSDatePickerDataTests: XCTestCase {
         selectionDate.addDate(date1)
         selectionDate.addDate(date2)
         
-        XCTAssertEqual(SSSelectedType.startOrSelected, selectionDate.isSelectedDate(date: expectedStart))
+        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expectedStart))
         XCTAssertEqual(SSSelectedType.between, selectionDate.isSelectedDate(date: expectedBetween))
         XCTAssertEqual(SSSelectedType.end, selectionDate.isSelectedDate(date: expectedEnd))
         XCTAssertEqual(SSSelectedType.unselected, selectionDate.isSelectedDate(date: unexpected1))
