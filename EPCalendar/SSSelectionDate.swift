@@ -14,6 +14,14 @@ public enum SelectionType: Int {
     case range
 }
 
+public enum SSSelectedType: Int {
+    case selected
+    case start
+    case between
+    case end
+    case unselected
+}
+
 public class SSSelectionDate {
     private var minDate: Date
     private var maxDate: Date
@@ -115,18 +123,26 @@ public class SSSelectionDate {
         }
     }
     
-    func isSelectedDate(date: Date) -> Bool {
+    func isSelectedDate(date: Date) -> SSSelectedType {
         let isSelectedDate = self.arrSelectedDates.contains(date)
-        if !isSelectedDate && self.type == .range {
-            return self.isIntervalSelectedDate(date:date)
+        if isSelectedDate {
+            switch self.type {
+            case .single, .multiple:
+                return .selected
+            case .range:
+                if self.arrSelectedDates[0] == date {
+                    return .start
+                } else if self.arrSelectedDates.count == 2 && self.arrSelectedDates[1] == date {
+                    return .end
+                }
+            }
+        } else {
+            if self.type == .range, let rangeDate = self.rangeDate, let rangeDateEnd = rangeDate.end {
+                if date > rangeDate.begin && date < rangeDateEnd {
+                    return .between
+                }
+            }
         }
-        return isSelectedDate
-    }
-    
-    func isIntervalSelectedDate(date: Date) -> Bool {
-        if self.type == .range, let rangeDate = self.rangeDate, let rangeDateEnd = rangeDate.end {
-            return date > rangeDate.begin && date < rangeDateEnd
-        }
-        return false
+        return .unselected
     }
 }
