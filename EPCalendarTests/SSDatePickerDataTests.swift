@@ -148,7 +148,7 @@ class SSDatePickerDataTests: XCTestCase {
         XCTAssertEqual(date1, rangeDate1.begin)
         XCTAssertEqual(date2, rangeDate1.end)
         
-        // [3] add date2 and date3 then date1
+        // [2] add date2 and date3 then date1
         selectionDate.removeAll()
         XCTAssertFalse(selectionDate.hasData())
         selectionDate.addDate(date2)
@@ -161,7 +161,7 @@ class SSDatePickerDataTests: XCTestCase {
         XCTAssertEqual(date1, rangeDate21.begin)
         XCTAssertEqual(date3, rangeDate21.end)
 
-        // [4] add date1 date3 then date 2
+        // [3] add date1 date3 then date 2
         selectionDate.removeAll()
         selectionDate.addDate(date1)
         selectionDate.addDate(date3)
