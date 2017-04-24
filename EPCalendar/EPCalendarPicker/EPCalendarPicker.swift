@@ -297,19 +297,13 @@ open class EPCalendarPicker: UICollectionViewController {
                     cell.deSelectedForLabelColor()
                 }
             case .range:
-                let isSelected = self.selectionDate.isSelectedDate(date: cell.currentDate)
-                switch isSelected {
-                case .between, .unselected:
-                    self.selectionDate.addDate(cell.currentDate)
-                    if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
-                        let lowerBound = sectionBoundForVisibleItems.lowerBound,
-                        let upperBound = sectionBoundForVisibleItems.upperBound {
-                        
-                        let needToUpdateSections = IndexSet(lowerBound ... upperBound)
-                        self.collectionView?.reloadSections(needToUpdateSections)
-                    }
-                case .beginOrSelected, .end:
-                    break
+                self.selectionDate.addDate(cell.currentDate)
+                if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
+                    let lowerBound = sectionBoundForVisibleItems.lowerBound,
+                    let upperBound = sectionBoundForVisibleItems.upperBound {
+                    
+                    let needToUpdateSections = IndexSet(lowerBound ... upperBound)
+                    self.collectionView?.reloadSections(needToUpdateSections)
                 }
             }
         }
