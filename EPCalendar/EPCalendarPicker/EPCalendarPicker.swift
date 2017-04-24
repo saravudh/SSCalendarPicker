@@ -40,10 +40,11 @@ open class EPCalendarPicker: UICollectionViewController {
     
     fileprivate(set) open var startYear: Int
     fileprivate(set) open var endYear: Int
-    private var selectedCell: Set<IndexPath>
+    private var selectedSectionUseOnlyForTypeRange: (start:Int?, end:Int?)
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        self.selectedSectionUseOnlyForTypeRange = (start:nil, end:nil)
         // setup Navigationbar
         self.navigationController?.navigationBar.tintColor = self.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
@@ -115,7 +116,6 @@ open class EPCalendarPicker: UICollectionViewController {
     public init(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
         self.startYear = startYear
         self.endYear = endYear
-        self.selectedCell = Set()
         self.selectionDate = SSSelectionDate(selectionType: selectionType, selectedDates: selectedDates)
         
         //Text color initializations
@@ -169,7 +169,6 @@ open class EPCalendarPicker: UICollectionViewController {
 
     override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EPCalendarCell1
-        
         let calendarStartDate = Date(year:startYear, month: 1, day: 1)
         let firstDayOfThisMonth = calendarStartDate.dateByAddingMonths(indexPath.section)
         let prefixDays = (firstDayOfThisMonth.weekday() - Calendar.current.firstWeekday)
@@ -207,24 +206,32 @@ open class EPCalendarPicker: UICollectionViewController {
             // end set cell type
             
             let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
-            if self.selectionDate.isSelectedDate(date: currentDate) && !isCellDateIsPresentDateFromNextMonth {
+            let isSelected = self.selectionDate.isSelectedDate(date: currentDate)
+            if (isSelected != .unselected) && !isCellDateIsPresentDateFromNextMonth {
                 switch self.selectionDate.type {
                 case .single:
                     break
                 case .multiple:
-                    self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
+                    cell.selectedForLabelColor()
                 case .range:
-                    if self.selectionDate.isIntervalSelectedDate(date: currentDate) {
-                        self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: true)
-                    } else {
-                        self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
+                    switch isSelected {
+                    case .between:
+                        cell.selectedIntervalCellForLabelColor()
+                    case .beginOrSelected:
+                        self.selectedSectionUseOnlyForTypeRange.start = indexPath.section
+                        cell.selectedForLabelColor()
+                    case .end:
+                        self.selectedSectionUseOnlyForTypeRange.end = indexPath.section
+                        cell.selectedForLabelColor()
+                    default:
+                        break
                     }
                 }
             } else {
-                self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
+                cell.deSelectedForLabelColor()
             }
         } else {
-            self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
+            cell.deSelectedForLabelColor()
             cell.isCellSelectable = false
             let previousDay = firstDayOfThisMonth.dateByAddingDays(-( prefixDays - indexPath.row))
             cell.currentDate = previousDay
@@ -278,37 +285,66 @@ open class EPCalendarPicker: UICollectionViewController {
             switch self.selectionDate.type {
             case .single:
                 calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
-                self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
+                cell.selectedForLabelColor()
                 dismiss(animated: true, completion: nil)
                 return
             case .multiple:
                 if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
                 }).count == 0 {
                     self.selectionDate.addDate(cell.currentDate)
-                    self.selectedForLabelColor(cell: cell, indexPath: indexPath, isIntervalCell: false)
+                    cell.selectedForLabelColor()
                 } else {
                     self.selectionDate.removeDate(cell.currentDate)
-                    self.deSelectedForLabelColor(cell: cell, indexPath: indexPath)
+                    cell.deSelectedForLabelColor()
                 }
             case .range:
-                self.selectionDate.addDate(cell.currentDate)
-                self.collectionView?.reloadSections([indexPath.section])
+                let isSelected = self.selectionDate.isSelectedDate(date: cell.currentDate)
+                switch isSelected {
+                case .between, .unselected:
+                    let previousSelectedSectionUseOnlyForTypeRange = self.selectedSectionUseOnlyForTypeRange
+                    self.selectionDate.addDate(cell.currentDate)
+                    let currentRangeDate = self.selectionDate.rangeDate
+                    
+
+                    if let beginDate = currentRangeDate?.begin, beginDate == cell.currentDate {
+                        self.selectedSectionUseOnlyForTypeRange.start = indexPath.section
+                    } else if let endDate = currentRangeDate?.end, endDate == cell.currentDate {
+                        self.selectedSectionUseOnlyForTypeRange.end = indexPath.section
+                    }
+                    if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems() {
+                        var updateFrom:Int = previousSelectedSectionUseOnlyForTypeRange.start ?? sectionBoundForVisibleItems.lowerBound ?? -1
+                        if let s = selectedSectionUseOnlyForTypeRange.start {
+                            if updateFrom == -1 || updateFrom > s {
+                                updateFrom = s
+                            }
+                        }
+                        var updateTo:Int = previousSelectedSectionUseOnlyForTypeRange.end ?? sectionBoundForVisibleItems.upperBound ?? -1
+                        if let s = selectedSectionUseOnlyForTypeRange.end {
+                            if updateTo == -1 || updateTo < s {
+                                updateTo = s
+                            }
+                        }
+                        if updateFrom != -1 && updateTo != -1 {
+                            let needToUpdateSections = IndexSet(updateFrom ... updateTo)
+                            self.collectionView?.reloadSections(needToUpdateSections)
+                        }
+                    }                    
+                case .beginOrSelected, .end:
+                    break
+                }
             }
         }
     }
     
-    private func selectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath, isIntervalCell: Bool) {
-        if isIntervalCell {
+    private func selectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath) {
+        if true {
             cell.selectedIntervalCellForLabelColor()
         } else {
-            cell.selectedForLabelColor()
         }
-        self.selectedCell.insert(indexPath)
     }
     
-    private func deSelectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath) {
+    private func deSelectedForLabelColor(cell: EPCalendarCell1) {
         cell.deSelectedForLabelColor()
-        self.selectedCell.remove(indexPath)
     }
     
     //MARK: Button Actions

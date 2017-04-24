@@ -40,6 +40,23 @@ extension UICollectionView {
             self.setContentOffset(topOfHeader, animated:false)
         }
     }
+    
+    func sectionBoundForVisibleItems() -> (lowerBound:Int?, upperBound:Int?) {
+        var result: (lowerBound:Int?, upperBound:Int?) = (lowerBound:nil, upperBound:nil)
+        for (i, indexPath) in self.indexPathsForVisibleItems.enumerated() {
+            if i == 0 {
+                result.lowerBound = indexPath.section
+                result.upperBound = indexPath.section
+            } else {
+                if indexPath.section < result.lowerBound! {
+                    result.lowerBound = indexPath.section
+                } else if indexPath.section > result.upperBound! {
+                    result.upperBound = indexPath.section
+                }
+            }
+        }
+        return result
+    }
 }
 
 //MARK: NSDate Extensions
