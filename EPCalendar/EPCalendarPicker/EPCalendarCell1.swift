@@ -49,14 +49,12 @@ class EPCalendarCell1: UICollectionViewCell {
     
     func selectedForLabelColor() {
         let color = EPDefaults.dateSelectionColor
-        self.lblDay.layer.cornerRadius = self.lblDay.frame.size.width/2
         self.lblDay.layer.backgroundColor = color.cgColor
         self.lblDay.textColor = UIColor.white
     }
 
     func selectedIntervalCellForLabelColor() {
         let color = EPDefaults.intervalDateSelectionColor
-        self.lblDay.layer.cornerRadius = self.lblDay.frame.size.width/2
         self.lblDay.layer.backgroundColor = color.cgColor
         self.lblDay.textColor = UIColor.white
     }

@@ -1,35 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="gTV-IL-0wX" customClass="EPCalendarCell1" customModule="EPCalendar" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="50" height="35"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="50" height="35"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqZ-GD-NWb">
-                        <rect key="frame" x="5" y="5" width="40" height="40"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="35"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
-                        <color key="textColor" red="0.0" green="0.45016961350000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.0" green="0.45016961350000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="cqZ-GD-NWb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="1vq-0V-sru"/>
-                <constraint firstAttribute="trailing" secondItem="cqZ-GD-NWb" secondAttribute="trailing" constant="5" id="JFc-pV-bti"/>
+                <constraint firstItem="cqZ-GD-NWb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1vq-0V-sru"/>
+                <constraint firstAttribute="trailing" secondItem="cqZ-GD-NWb" secondAttribute="trailing" id="JFc-pV-bti"/>
                 <constraint firstItem="cqZ-GD-NWb" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="Pvx-qA-eP9"/>
                 <constraint firstItem="cqZ-GD-NWb" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="VKQ-7U-064"/>
-                <constraint firstItem="cqZ-GD-NWb" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="hcq-WQ-FZQ"/>
-                <constraint firstAttribute="bottom" secondItem="cqZ-GD-NWb" secondAttribute="bottom" constant="5" id="zd6-X9-51u"/>
+                <constraint firstItem="cqZ-GD-NWb" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hcq-WQ-FZQ"/>
+                <constraint firstAttribute="bottom" secondItem="cqZ-GD-NWb" secondAttribute="bottom" id="zd6-X9-51u"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">

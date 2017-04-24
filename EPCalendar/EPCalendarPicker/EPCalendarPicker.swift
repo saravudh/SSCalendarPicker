@@ -127,8 +127,9 @@ open class EPCalendarPicker: UICollectionViewController {
         //Layout creation
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
+
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 4
         layout.headerReferenceSize = EPDefaults.headerSize
         super.init(collectionViewLayout: layout)
     }
@@ -242,14 +243,21 @@ open class EPCalendarPicker: UICollectionViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+        let rect = self.collectionView!.bounds
+        let screenWidth = rect.size.width
+        var width = round(screenWidth / 7.0)
+        let height = width * 0.8
         
-        let rect = UIScreen.main.bounds
-        let screenWidth = rect.size.width - 7
-        return CGSize(width: screenWidth/7, height: screenWidth/7);
+        let isLastCellInRow = (indexPath.item % 7 == 0)
+        if isLastCellInRow {
+            let remainderWidth = screenWidth - (width * 7)
+            width += remainderWidth
+        }
+        return CGSize(width: width, height: height);
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(5, 0, 5, 0); //top,left,bottom,right
+        return UIEdgeInsetsMake(0, 0, 0, 0); //top,left,bottom,right
     }
     
     override open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -269,7 +277,7 @@ open class EPCalendarPicker: UICollectionViewController {
         }
         return UICollectionReusableView()
     }
-    
+
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
         if cell.isCellSelectable! {
