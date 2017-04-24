@@ -154,7 +154,6 @@ open class EPCalendarPicker: UICollectionViewController {
 
 
     override open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         let startDate = Date(year: startYear, month: 1, day: 1)
         let firstDayOfMonth = startDate.dateByAddingMonths(section)
         let addingPrefixDaysWithMonthDyas = ( firstDayOfMonth.numberOfDaysInMonth() + firstDayOfMonth.weekday() - Calendar.current.firstWeekday )
@@ -163,7 +162,6 @@ open class EPCalendarPicker: UICollectionViewController {
         if addingSuffixDays != 0 {
             totalNumber = totalNumber + (7 - addingSuffixDays)
         }
-        
         return totalNumber
     }
 
@@ -246,7 +244,6 @@ open class EPCalendarPicker: UICollectionViewController {
         cell.backgroundColor = UIColor.clear
         return cell
     }
-
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
@@ -272,10 +269,8 @@ open class EPCalendarPicker: UICollectionViewController {
             header.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
             header.updateWeekendLabelColor(weekendTintColor)
             header.backgroundColor = UIColor.white
-            
             return header;
         }
-
         return UICollectionReusableView()
     }
     
@@ -304,7 +299,6 @@ open class EPCalendarPicker: UICollectionViewController {
                     let previousSelectedSectionUseOnlyForTypeRange = self.selectedSectionUseOnlyForTypeRange
                     self.selectionDate.addDate(cell.currentDate)
                     let currentRangeDate = self.selectionDate.rangeDate
-                    
 
                     if let beginDate = currentRangeDate?.begin, beginDate == cell.currentDate {
                         self.selectedSectionUseOnlyForTypeRange.start = indexPath.section
@@ -336,17 +330,6 @@ open class EPCalendarPicker: UICollectionViewController {
         }
     }
     
-    private func selectedForLabelColor(cell: EPCalendarCell1, indexPath: IndexPath) {
-        if true {
-            cell.selectedIntervalCellForLabelColor()
-        } else {
-        }
-    }
-    
-    private func deSelectedForLabelColor(cell: EPCalendarCell1) {
-        cell.deSelectedForLabelColor()
-    }
-    
     //MARK: Button Actions
     
     internal func onTouchCancelButton() {
@@ -366,7 +349,6 @@ open class EPCalendarPicker: UICollectionViewController {
         scrollToToday()
     }
     
-    
     open func scrollToToday () {
         let today = Date()
         scrollToMonthForDate(today)
@@ -381,6 +363,4 @@ open class EPCalendarPicker: UICollectionViewController {
         
         self.collectionView?.scrollToIndexpathByShowingHeader(indexPath)
     }
-    
-    
 }
