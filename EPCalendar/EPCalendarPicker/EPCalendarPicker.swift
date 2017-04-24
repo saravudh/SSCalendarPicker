@@ -40,11 +40,9 @@ open class EPCalendarPicker: UICollectionViewController {
     
     fileprivate(set) open var startYear: Int
     fileprivate(set) open var endYear: Int
-    private var selectedSectionUseOnlyForTypeRange: (start:Int?, end:Int?)
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.selectedSectionUseOnlyForTypeRange = (start:nil, end:nil)
         // setup Navigationbar
         self.navigationController?.navigationBar.tintColor = self.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
@@ -216,10 +214,8 @@ open class EPCalendarPicker: UICollectionViewController {
                     case .between:
                         cell.selectedIntervalCellForLabelColor()
                     case .beginOrSelected:
-                        self.selectedSectionUseOnlyForTypeRange.start = indexPath.section
                         cell.selectedForLabelColor()
                     case .end:
-                        self.selectedSectionUseOnlyForTypeRange.end = indexPath.section
                         cell.selectedForLabelColor()
                     default:
                         break
@@ -296,33 +292,14 @@ open class EPCalendarPicker: UICollectionViewController {
                 let isSelected = self.selectionDate.isSelectedDate(date: cell.currentDate)
                 switch isSelected {
                 case .between, .unselected:
-                    let previousSelectedSectionUseOnlyForTypeRange = self.selectedSectionUseOnlyForTypeRange
                     self.selectionDate.addDate(cell.currentDate)
-                    let currentRangeDate = self.selectionDate.rangeDate
-
-                    if let beginDate = currentRangeDate?.begin, beginDate == cell.currentDate {
-                        self.selectedSectionUseOnlyForTypeRange.start = indexPath.section
-                    } else if let endDate = currentRangeDate?.end, endDate == cell.currentDate {
-                        self.selectedSectionUseOnlyForTypeRange.end = indexPath.section
+                    if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
+                        let lowerBound = sectionBoundForVisibleItems.lowerBound,
+                        let upperBound = sectionBoundForVisibleItems.upperBound {
+                        
+                        let needToUpdateSections = IndexSet(lowerBound ... upperBound)
+                        self.collectionView?.reloadSections(needToUpdateSections)
                     }
-                    if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems() {
-                        var updateFrom:Int = previousSelectedSectionUseOnlyForTypeRange.start ?? sectionBoundForVisibleItems.lowerBound ?? -1
-                        if let s = selectedSectionUseOnlyForTypeRange.start {
-                            if updateFrom == -1 || updateFrom > s {
-                                updateFrom = s
-                            }
-                        }
-                        var updateTo:Int = previousSelectedSectionUseOnlyForTypeRange.end ?? sectionBoundForVisibleItems.upperBound ?? -1
-                        if let s = selectedSectionUseOnlyForTypeRange.end {
-                            if updateTo == -1 || updateTo < s {
-                                updateTo = s
-                            }
-                        }
-                        if updateFrom != -1 && updateTo != -1 {
-                            let needToUpdateSections = IndexSet(updateFrom ... updateTo)
-                            self.collectionView?.reloadSections(needToUpdateSections)
-                        }
-                    }                    
                 case .beginOrSelected, .end:
                     break
                 }

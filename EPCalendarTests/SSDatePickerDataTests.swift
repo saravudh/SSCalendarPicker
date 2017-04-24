@@ -139,90 +139,83 @@ class SSDatePickerDataTests: XCTestCase {
         let date1 = Date(year : 2017, month : 1, day : 1)
         let date2 = Date(year : 2017, month : 2, day : 1)
         let date3 = Date(year : 2017, month : 3, day : 1)
+        let date4 = Date(year : 2017, month : 3, day : 10)
         
         // [1] add date2 then date1
         let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate.addDate(date1)
         selectionDate.addDate(date2)
+        selectionDate.addDate(date1)
         let rangeDate1 = selectionDate.rangeDate!
         XCTAssertEqual(date1, rangeDate1.begin)
-        XCTAssertEqual(date2, rangeDate1.end)
+        XCTAssertNil(rangeDate1.end)
         
-        // [2] add date2 and date3 then date1
+        // [2] add date1 and date2 then date1
+        selectionDate.removeAll()
+        XCTAssertFalse(selectionDate.hasData())
+        selectionDate.addDate(date1)
+        selectionDate.addDate(date2)
+        let rangeDate2 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate2.begin)
+        XCTAssertEqual(date2, rangeDate2.end)
+        selectionDate.addDate(date1)
+        let rangeDate21 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate21.begin)
+        XCTAssertNil(rangeDate21.end)
+
+        // [3] add date1 and date2 then date2
+        selectionDate.removeAll()
+        XCTAssertFalse(selectionDate.hasData())
+        selectionDate.addDate(date1)
+        selectionDate.addDate(date2)
+        let rangeDate3 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate3.begin)
+        XCTAssertEqual(date2, rangeDate3.end)
+        selectionDate.addDate(date2)
+        let rangeDate31 = selectionDate.rangeDate!
+        XCTAssertEqual(date2, rangeDate31.begin)
+        XCTAssertNil(rangeDate31.end)
+        
+        
+        // [4] add date2 and date3 then date1
         selectionDate.removeAll()
         XCTAssertFalse(selectionDate.hasData())
         selectionDate.addDate(date2)
         selectionDate.addDate(date3)
-        let rangeDate2 = selectionDate.rangeDate!
-        XCTAssertEqual(date2, rangeDate2.begin)
-        XCTAssertEqual(date3, rangeDate2.end)
+        let rangeDate4 = selectionDate.rangeDate!
+        XCTAssertEqual(date2, rangeDate4.begin)
+        XCTAssertEqual(date3, rangeDate4.end)
         selectionDate.addDate(date1)
-        let rangeDate21 = selectionDate.rangeDate!
-        XCTAssertEqual(date1, rangeDate21.begin)
-        XCTAssertEqual(date3, rangeDate21.end)
-
-        // [3] add date1 date3 then date 2
+        let rangeDate41 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate41.begin)
+        XCTAssertNil(rangeDate41.end)
+        
+        
+        // [5] add date2 and date3 then date4
         selectionDate.removeAll()
-        selectionDate.addDate(date1)
-        selectionDate.addDate(date3)
-        let rangeDate3 = selectionDate.rangeDate!
-        XCTAssertEqual(date1, rangeDate3.begin)
-        XCTAssertEqual(date3, rangeDate3.end)
+        XCTAssertFalse(selectionDate.hasData())
         selectionDate.addDate(date2)
-        let rangeDate31 = selectionDate.rangeDate!
-        XCTAssertEqual(date1, rangeDate31.begin)
-        XCTAssertEqual(date2, rangeDate31.end)
-    }
-    
-    func testRangeDataAddBetweenData() {
-        let date1 = Date(year : 2017, month : 1, day : 1)
-        let date2 = Date(year : 2017, month : 1, day : 2)
-        let date3 = Date(year : 2017, month : 1, day : 3)
-        let date4 = Date(year : 2017, month : 1, day : 4)
-        let date5 = Date(year : 2017, month : 1, day : 5)
-        let date6 = Date(year : 2017, month : 1, day : 6)
-        let date7 = Date(year : 2017, month : 1, day : 7)
+        selectionDate.addDate(date3)
+        let rangeDate5 = selectionDate.rangeDate!
+        XCTAssertEqual(date2, rangeDate5.begin)
+        XCTAssertEqual(date3, rangeDate5.end)
+        selectionDate.addDate(date4)
+        let rangeDate51 = selectionDate.rangeDate!
+        XCTAssertEqual(date4, rangeDate51.begin)
+        XCTAssertNil(rangeDate41.end)
         
-        let selectionDate1 = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate1.addDate(date1)
-        selectionDate1.addDate(date7)
-        selectionDate1.addDate(date2)
-        let rangeDate1 = selectionDate1.rangeDate!
-        XCTAssertEqual(date2, rangeDate1.begin)
-        XCTAssertEqual(date7, rangeDate1.end)
+        // [6] add date1 and date4 then date2
+        selectionDate.removeAll()
+        XCTAssertFalse(selectionDate.hasData())
+        selectionDate.addDate(date1)
+        selectionDate.addDate(date4)
+        let rangeDate6 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate6.begin)
+        XCTAssertEqual(date4, rangeDate6.end)
+        selectionDate.addDate(date2)
+        let rangeDate61 = selectionDate.rangeDate!
+        XCTAssertEqual(date2, rangeDate61.begin)
+        XCTAssertNil(rangeDate61.end)
         
-
-        let selectionDate2 = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate2.addDate(date1)
-        selectionDate2.addDate(date7)
-        selectionDate2.addDate(date3)
-        let rangeDate2 = selectionDate2.rangeDate!
-        XCTAssertEqual(date3, rangeDate2.begin)
-        XCTAssertEqual(date7, rangeDate2.end)
-
-        let selectionDate3 = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate3.addDate(date1)
-        selectionDate3.addDate(date7)
-        selectionDate3.addDate(date4)
-        let rangeDate3 = selectionDate3.rangeDate!
-        XCTAssertEqual(date1, rangeDate3.begin)
-        XCTAssertEqual(date4, rangeDate3.end)
-
-        let selectionDate4 = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate4.addDate(date1)
-        selectionDate4.addDate(date7)
-        selectionDate4.addDate(date5)
-        let rangeDate4 = selectionDate4.rangeDate!
-        XCTAssertEqual(date1, rangeDate4.begin)
-        XCTAssertEqual(date5, rangeDate4.end)
-
-        let selectionDate5 = SSSelectionDate(selectionType: .range, selectedDates: nil)
-        selectionDate5.addDate(date1)
-        selectionDate5.addDate(date7)
-        selectionDate5.addDate(date6)
-        let rangeDate5 = selectionDate5.rangeDate!
-        XCTAssertEqual(date1, rangeDate5.begin)
-        XCTAssertEqual(date6, rangeDate5.end)
     }
     
     func testRangeRemoveData() {

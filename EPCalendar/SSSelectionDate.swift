@@ -81,19 +81,8 @@ public class SSSelectionDate {
                         self.arrSelectedDates.append(aDate)
                     }
                 } else if self.arrSelectedDates.count == 2 {
-                    if aDate < self.arrSelectedDates[0] {
-                        self.arrSelectedDates[0] = aDate
-                    } else if aDate > self.arrSelectedDates[1] {
-                        self.arrSelectedDates[1] = aDate
-                    } else if aDate != self.arrSelectedDates[0] || aDate != self.arrSelectedDates[1] {
-                        let distanceFromBegin = NSCalendar.current.dateComponents([.day], from: self.arrSelectedDates[0], to: aDate)
-                        let distanceToEnd = NSCalendar.current.dateComponents([.day], from: aDate, to: self.arrSelectedDates[1])
-                        if distanceFromBegin.day! < distanceToEnd.day! {
-                            self.arrSelectedDates[0] = aDate
-                        } else {
-                            self.arrSelectedDates[1] = aDate
-                        }
-                    }
+                    self.arrSelectedDates.removeAll()
+                    self.arrSelectedDates.append(aDate)
                 }
             }
         }
