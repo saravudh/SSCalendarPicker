@@ -158,38 +158,37 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    func isSunday() -> Bool
-    {
+    func dateString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM YY"
+        return dateFormatter.string(from: self)
+    }
+    
+    func isSunday() -> Bool {
         return (self.getWeekday() == 1)
     }
     
-    func isMonday() -> Bool
-    {
+    func isMonday() -> Bool {
         return (self.getWeekday() == 2)
     }
     
-    func isTuesday() -> Bool
-    {
+    func isTuesday() -> Bool {
         return (self.getWeekday() == 3)
     }
     
-    func isWednesday() -> Bool
-    {
+    func isWednesday() -> Bool {
         return (self.getWeekday() == 4)
     }
     
-    func isThursday() -> Bool
-    {
+    func isThursday() -> Bool {
         return (self.getWeekday() == 5)
     }
     
-    func isFriday() -> Bool
-    {
+    func isFriday() -> Bool {
         return (self.getWeekday() == 6)
     }
     
-    func isSaturday() -> Bool
-    {
+    func isSaturday() -> Bool {
         return (self.getWeekday() == 7)
     }
     

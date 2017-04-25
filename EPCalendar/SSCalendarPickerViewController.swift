@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SSCalendarPickerViewController: UIViewController {
+class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
     var calendarDelegate: EPCalendarPickerDelegate?
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
@@ -31,12 +31,32 @@ class SSCalendarPickerViewController: UIViewController {
     @IBOutlet weak var lblReturnTitle: UILabel!
     @IBOutlet weak var lblReturnDate: UILabel!
 
-    public func setSelectedDate(begin: Date, end: Date?) {
-        
+    func dateDidChange() {
+        if let beginDate = self.selectionDate.departDate {
+            self.lblDepartDate.text = beginDate.dateString()
+            self.lblDepartTitle.textColor = self.tintColor
+        } else {
+            self.lblDepartDate.text = ""
+            self.lblDepartTitle.textColor = UIColor.lightGray
+        }
+        if let endDate = self.selectionDate.returnDate {
+            self.lblReturnDate.text = endDate.dateString()
+            self.lblReturnTitle.textColor = self.tintColor
+        } else {
+            self.lblReturnDate.text = ""
+            self.lblReturnTitle.textColor = UIColor.lightGray
+        }
     }
+    
+    func setupColor() {
+        self.lblDepartDate.textColor = self.tintColor
+        self.lblReturnDate.textColor = self.tintColor
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EPCalendarPickerSegue" {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
+                self.selectionDate.delegate = self
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
                 calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear)
@@ -50,16 +70,10 @@ class SSCalendarPickerViewController: UIViewController {
                 self.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
                 self.updateWeekendLabelColor(EPDefaults.weekendTintColor)
                 self.setDayHeader()
+                self.dateDidChange()
+                self.setupColor()
             }
         }
-    }
-    
-    public func setDepartDate() {
-        
-    }
-    
-    public func setReturnDate() {
-        
     }
     
     func inititlizeBarButtons(){
