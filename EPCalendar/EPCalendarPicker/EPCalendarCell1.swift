@@ -23,7 +23,7 @@ class EPCalendarCell1: UICollectionViewCell {
         SSCalendarCellType.disable: (textColor: EPDefaults.dayDisabledTintColor, bgColor: UIColor.clear),
         SSCalendarCellType.hidden: (textColor: UIColor.clear, bgColor: UIColor.clear)
     ]
-    let TODAY_CELL_COLOR = (textColor: UIColor.white, bgColor: EPDefaults.todayTintColor)
+    var todayTextColor: UIColor = EPDefaults.todayTintColor
 
     var isToday: Bool = false
     var currentDate: Date!
@@ -61,8 +61,8 @@ class EPCalendarCell1: UICollectionViewCell {
     
     func deSelectedForLabelColor() {
         if self.isToday {
-            self.lblDay.layer.backgroundColor = TODAY_CELL_COLOR.bgColor.cgColor
-            self.lblDay.textColor = TODAY_CELL_COLOR.textColor
+            self.lblDay.layer.backgroundColor = UIColor.white.cgColor
+            self.lblDay.textColor = todayTextColor
         } else {
             self.lblDay.layer.backgroundColor = PREDEFINED_CELL_COLOR[self.type]!.bgColor.cgColor
             self.lblDay.textColor = PREDEFINED_CELL_COLOR[self.type]!.textColor

@@ -14,9 +14,8 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     var endYear: Int = EPDefaults.endYear
     var startDate: Date = EPDefaults.startDate
     open var showsTodaysButton: Bool = true
-    open var todayTintColor: UIColor = EPDefaults.todayTintColor
     private var epCalendar: EPCalendarPicker?
-    var tintColor: UIColor = EPDefaults.tintColor
+
     open var selectionDate: SSSelectionDate = SSSelectionDate(selectedDates: nil)
 
     @IBOutlet weak var lblFirst: UILabel!
@@ -34,14 +33,14 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     func dateDidChange() {
         if let beginDate = self.selectionDate.departDate {
             self.lblDepartDate.text = beginDate.dateString()
-            self.lblDepartTitle.textColor = self.tintColor
+            self.lblDepartTitle.textColor = EPDefaults.tintColor
         } else {
             self.lblDepartDate.text = ""
             self.lblDepartTitle.textColor = UIColor.lightGray
         }
         if let endDate = self.selectionDate.returnDate {
             self.lblReturnDate.text = endDate.dateString()
-            self.lblReturnTitle.textColor = self.tintColor
+            self.lblReturnTitle.textColor = EPDefaults.tintColor
         } else {
             self.lblReturnDate.text = ""
             self.lblReturnTitle.textColor = UIColor.lightGray
@@ -49,8 +48,8 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     }
     
     func setupColor() {
-        self.lblDepartDate.textColor = self.tintColor
-        self.lblReturnDate.textColor = self.tintColor
+        self.lblDepartDate.textColor = EPDefaults.tintColor
+        self.lblReturnDate.textColor = EPDefaults.tintColor
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,8 +66,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
                 calendarPicker.cover = self
                 //calendarPicker.barTintColor = UIColor.greenColor()
                 calendarPicker.dayDisabledTintColor = UIColor.gray
-                self.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
-                self.updateWeekendLabelColor(EPDefaults.weekendTintColor)
+                self.updateDayLabelColor()
                 self.setDayHeader()
                 self.dateDidChange()
                 self.setupColor()
@@ -88,7 +86,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
         if showsTodaysButton {
             let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))
             arrayBarButtons.append(todayButton)
-            todayButton.tintColor = todayTintColor
+            todayButton.tintColor = EPDefaults.todayTintColor
         }
         self.navigationItem.rightBarButtonItems = arrayBarButtons
     }
@@ -121,29 +119,13 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
         }
     }
     
-    func updateWeekendLabelColor(_ color: UIColor) {
-        if Calendar.current.firstWeekday == 2 {
-            lblSixth.textColor = color
-            lblSeventh.textColor = color
-        } else {
-            lblFirst.textColor = color
-            lblSeventh.textColor = color
-        }
-    }
-    
-    func updateWeekdaysLabelColor(_ color: UIColor) {
-        if Calendar.current.firstWeekday == 2 {
-            lblFirst.textColor = color
-            lblSecond.textColor = color
-            lblThird.textColor = color
-            lblFourth.textColor = color
-            lblFifth.textColor = color
-        } else {
-            lblSecond.textColor = color
-            lblThird.textColor = color
-            lblFourth.textColor = color
-            lblFifth.textColor = color
-            lblSixth.textColor = color
-        }
+    func updateDayLabelColor() {
+        lblFirst.textColor = EPDefaults.dayLabelColor
+        lblSecond.textColor = EPDefaults.dayLabelColor
+        lblThird.textColor = EPDefaults.dayLabelColor
+        lblFourth.textColor = EPDefaults.dayLabelColor
+        lblFifth.textColor = EPDefaults.dayLabelColor
+        lblSixth.textColor = EPDefaults.dayLabelColor
+        lblSeventh.textColor = EPDefaults.dayLabelColor
     }
 }

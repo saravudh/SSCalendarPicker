@@ -16,21 +16,25 @@ struct EPDefaults  {
     
     //Colors
     static let dayDisabledTintColor = UIColor.lightGray
-    static let weekdayTintColor = EPColors.EmeraldColor
-    static let weekendTintColor = EPColors.PomegranateColor
-    static let dateSelectionColor = EPColors.PeterRiverColor
-    static let intervalDateSelectionColor = EPColors.PeterRiverLightColor
-    static let monthTitleColor = EPColors.PumpkinColor
-    static let todayTintColor = EPColors.AmethystColor
+    static let weekdayTintColor = EPColors.lightBlack
+    static let weekendTintColor = EPColors.lightBlack
+    static let dateSelectionColor = EPColors.greenShorsher
+    static let intervalDateSelectionColor = EPColors.lightGreenShorsher
+    static let monthTitleColor = UIColor.darkGray
+    static let todayTintColor = EPColors.greenShorsher
+    static let dayLabelColor = UIColor.gray
     
-    static let tintColor = EPColors.PomegranateColor
+    static let tintColor = EPColors.greenShorsher
     static let barTintColor = UIColor.white
     
     //HeaderSize
     static let headerSize = CGSize(width: 100,height: 60)
 }
 
-struct EPColors{
+struct EPColors {
+    static let greenShorsher = UIColor(red: 85 / 255.0, green: 147 / 255.0, blue: 59 / 255.0, alpha: 1.0)
+    static let lightGreenShorsher = UIColor(red: 151 / 255.0, green: 188 / 255.0, blue: 100 / 255.0, alpha: 1.0)
+    static let lightBlack = UIColor(red: 47/255, green: 79/255, blue: 79/255, alpha: 1.0)
     static let BlueColor = UIColor(red: (0/255), green: (21/255), blue: (63/255), alpha: 1.0)
     static let YellowColor = UIColor(red: (241/255), green: (196/255), blue: (15/255), alpha: 1.0)
     static let LightGrayColor = UIColor(red: (230/255), green: (230/255), blue: (230/255), alpha: 1.0)

@@ -47,9 +47,9 @@ open class EPCalendarPicker: UICollectionViewController {
         self.collectionView?.collectionViewLayout = layout
         
         // setup Navigationbar
-        self.navigationController?.navigationBar.tintColor = self.cover?.tintColor
+        self.navigationController?.navigationBar.tintColor = EPDefaults.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:self.cover?.tintColor ?? EPDefaults.tintColor]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: EPDefaults.tintColor]
 
         // setup collectionview
         self.collectionView?.delegate = self
@@ -117,6 +117,7 @@ open class EPCalendarPicker: UICollectionViewController {
 
     override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EPCalendarCell1
+        cell.todayTextColor = EPDefaults.tintColor
         let calendarStartDate = Date(year:startYear, month: 1, day: 1)
         let firstDayOfThisMonth = calendarStartDate.dateByAddingMonths(indexPath.section)
         let prefixDays = (firstDayOfThisMonth.weekday() - Calendar.current.firstWeekday)
