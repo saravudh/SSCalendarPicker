@@ -25,38 +25,44 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="80"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kia-Rj-5aN" userLabel="DepartStack">
-                                        <rect key="frame" x="10" y="8" width="64" height="41"/>
+                                        <rect key="frame" x="10" y="8" width="160" height="41"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Depart" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1j-rU-4cB">
-                                                <rect key="frame" x="0.0" y="0.0" width="64" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Depart" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1j-rU-4cB">
+                                                <rect key="frame" x="0.0" y="0.0" width="160" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Mar 16" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GG8-kq-cPp">
-                                                <rect key="frame" x="0.0" y="20.5" width="64" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Mar 16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GG8-kq-cPp">
+                                                <rect key="frame" x="0.0" y="20.5" width="160" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="160" id="BJD-44-4MH"/>
+                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C1d-yS-T6j" userLabel="ReturnStack">
-                                        <rect key="frame" x="298" y="8" width="67" height="41"/>
+                                        <rect key="frame" x="205" y="8" width="160" height="41"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpN-P1-Sn1">
-                                                <rect key="frame" x="0.0" y="0.0" width="67" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpN-P1-Sn1">
+                                                <rect key="frame" x="0.0" y="0.0" width="160" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 Mar 16" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LW-uZ-bnW">
-                                                <rect key="frame" x="0.0" y="20.5" width="67" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 Mar 16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LW-uZ-bnW">
+                                                <rect key="frame" x="0.0" y="20.5" width="160" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="160" id="VPQ-lE-Po7"/>
+                                        </constraints>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xzy-Iu-jHQ" customClass="DayHeaderView" customModule="EPCalendar" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="60.5" width="375" height="19.5"/>
@@ -174,9 +180,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lblDepartDate" destination="GG8-kq-cPp" id="AxF-Nb-yNk"/>
+                        <outlet property="lblDepartTitle" destination="i1j-rU-4cB" id="kom-Rm-GvJ"/>
                         <outlet property="lblFifth" destination="fwv-q7-bWq" id="hGT-uw-Yfs"/>
                         <outlet property="lblFirst" destination="xE7-n8-SBh" id="PaB-pE-2xJ"/>
                         <outlet property="lblFourth" destination="hV7-VB-oon" id="Pit-0G-N4c"/>
+                        <outlet property="lblReturnDate" destination="1LW-uZ-bnW" id="hIc-ZK-kzS"/>
+                        <outlet property="lblReturnTitle" destination="rpN-P1-Sn1" id="d22-Iq-ZTm"/>
                         <outlet property="lblSecond" destination="lsP-l1-yTS" id="ehq-by-xGK"/>
                         <outlet property="lblSeventh" destination="BMA-UI-3n0" id="WZX-6J-8ct"/>
                         <outlet property="lblSixth" destination="Z0R-Y8-WX5" id="rQV-ff-KlB"/>

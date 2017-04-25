@@ -21,11 +21,8 @@ open class EPCalendarPicker: UICollectionViewController {
 
     open var calendarDelegate : EPCalendarPickerDelegate?
     open var selectionDate: SSSelectionDate
-    open var showsTodaysButton: Bool = true
-    open var tintColor: UIColor
     
     open var dayDisabledTintColor: UIColor
-    open var todayTintColor: UIColor
     open var monthTitleColor: UIColor
     
     // new options
@@ -36,6 +33,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     open var backgroundImage: UIImage?
     open var backgroundColor: UIColor?
+    var cover: SSCalendarPickerViewController?
     
     fileprivate(set) open var startYear: Int
     fileprivate(set) open var endYear: Int
@@ -51,9 +49,9 @@ open class EPCalendarPicker: UICollectionViewController {
         self.collectionView?.collectionViewLayout = layout
         
         // setup Navigationbar
-        self.navigationController?.navigationBar.tintColor = self.tintColor
+        self.navigationController?.navigationBar.tintColor = self.cover?.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:self.tintColor]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:self.cover?.tintColor ?? EPDefaults.tintColor]
 
         // setup collectionview
         self.collectionView?.delegate = self
@@ -65,8 +63,6 @@ open class EPCalendarPicker: UICollectionViewController {
         self.collectionView!.register(UINib(nibName: "EPCalendarCell1", bundle: Bundle(for: EPCalendarPicker.self )), forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UINib(nibName: "EPCalendarHeaderView", bundle: Bundle(for: EPCalendarPicker.self )), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header")
         
-        inititlizeBarButtons()
-
         DispatchQueue.main.async { () -> Void in
             self.scrollToToday()
         }
@@ -81,26 +77,7 @@ open class EPCalendarPicker: UICollectionViewController {
     }
 
     
-    func inititlizeBarButtons(){
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(EPCalendarPicker.onTouchCancelButton))
-        self.navigationItem.leftBarButtonItem = cancelButton
 
-        var arrayBarButtons  = [UIBarButtonItem]()
-        
-        if self.selectionDate.type == .multiple {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(EPCalendarPicker.onTouchDoneButton))
-            arrayBarButtons.append(doneButton)
-        }
-        
-        if showsTodaysButton {
-            let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self, action:#selector(EPCalendarPicker.onTouchTodayButton))
-            arrayBarButtons.append(todayButton)
-            todayButton.tintColor = todayTintColor
-        }
-        
-        self.navigationItem.rightBarButtonItems = arrayBarButtons
-        
-    }
     
 
     public func inititlizeProperties(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
@@ -117,11 +94,9 @@ open class EPCalendarPicker: UICollectionViewController {
         self.endYear = EPDefaults.endYear
 
         //Text color initializations
-        self.tintColor = EPDefaults.tintColor
         self.barTintColor = EPDefaults.barTintColor
         self.dayDisabledTintColor = EPDefaults.dayDisabledTintColor
         self.monthTitleColor = EPDefaults.monthTitleColor
-        self.todayTintColor = EPDefaults.todayTintColor
         super.init(coder: aDecoder)
     }
 
@@ -324,7 +299,6 @@ open class EPCalendarPicker: UICollectionViewController {
         let year = date.year()
         let section = ((year - startYear) * 12) + month
         let indexPath = IndexPath(row:1, section: section-1)
-        
         self.collectionView?.scrollToIndexpathByShowingHeader(indexPath)
     }
 }
