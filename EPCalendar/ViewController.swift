@@ -37,12 +37,9 @@ class ViewController: UIViewController, EPCalendarPickerDelegate {
         txtViewDetail.text = "User cancelled selection"
         
     }
-    func epCalendarPicker(_: EPCalendarPicker, didSelectDate date : Date) {
-        txtViewDetail.text = "User selected date: \n\(date)"
-        
-    }
-    func epCalendarPicker(_: EPCalendarPicker, didSelectMultipleDate dates : [Date]) {
-        txtViewDetail.text = "User selected dates: \n\(dates)"
+
+    func epCalendarPicker(_: EPCalendarPicker, didSelectDate dates : (begin: Date, end: Date?)?) {
+        txtViewDetail.text = "User selected dates: \n\(String(describing: dates?.begin)) : \(String(describing: dates?.end))"
     }
 
 }

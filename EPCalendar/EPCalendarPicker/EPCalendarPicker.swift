@@ -11,10 +11,9 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-@objc public protocol EPCalendarPickerDelegate{
-    @objc optional    func epCalendarPicker(_: EPCalendarPicker, didCancel error : NSError)
-    @objc optional    func epCalendarPicker(_: EPCalendarPicker, didSelectDate date : Date)
-    @objc optional    func epCalendarPicker(_: EPCalendarPicker, didSelectMultipleDate dates : [Date])
+public protocol EPCalendarPickerDelegate{
+    func epCalendarPicker(_: EPCalendarPicker, didCancel error : NSError)
+    func epCalendarPicker(_: EPCalendarPicker, didSelectDate dates : (begin: Date, end: Date?)?)
 }
 
 open class EPCalendarPicker: UICollectionViewController {
@@ -76,20 +75,14 @@ open class EPCalendarPicker: UICollectionViewController {
         }
     }
 
-    
-
-    
-
-    public func inititlizeProperties(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
+    public func inititlizeProperties(startYear: Int, endYear: Int, selectedDates: [Date]?) {
         self.startYear = startYear
         self.endYear = endYear
-        self.selectionDate = SSSelectionDate(selectionType: selectionType, selectedDates: selectedDates)
-        
-    }
-    
+        self.selectionDate = SSSelectionDate(selectedDates: selectedDates)
+    }    
 
     required public init?(coder aDecoder: NSCoder) {
-        self.selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        self.selectionDate = SSSelectionDate(selectedDates: nil)
         self.startYear = EPDefaults.startYear
         self.endYear = EPDefaults.endYear
 
@@ -166,22 +159,15 @@ open class EPCalendarPicker: UICollectionViewController {
             let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
             let isSelected = self.selectionDate.isSelectedDate(date: currentDate)
             if (isSelected != .unselected) && !isCellDateIsPresentDateFromNextMonth {
-                switch self.selectionDate.type {
-                case .single:
-                    break
-                case .multiple:
+                switch isSelected {
+                case .between:
+                    cell.selectedIntervalCellForLabelColor()
+                case .beginOrSelected:
                     cell.selectedForLabelColor()
-                case .range:
-                    switch isSelected {
-                    case .between:
-                        cell.selectedIntervalCellForLabelColor()
-                    case .beginOrSelected:
-                        cell.selectedForLabelColor()
-                    case .end:
-                        cell.selectedForLabelColor()
-                    default:
-                        break
-                    }
+                case .end:
+                    cell.selectedForLabelColor()
+                default:
+                    break
                 }
             } else {
                 cell.deSelectedForLabelColor()
@@ -241,30 +227,13 @@ open class EPCalendarPicker: UICollectionViewController {
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
         if cell.isCellSelectable! {
-            switch self.selectionDate.type {
-            case .single:
-                calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
-                cell.selectedForLabelColor()
-                dismiss(animated: true, completion: nil)
-                return
-            case .multiple:
-                if self.selectionDate.multipleDates.filter({ $0.isDateSameDay(cell.currentDate)
-                }).count == 0 {
-                    self.selectionDate.addDate(cell.currentDate)
-                    cell.selectedForLabelColor()
-                } else {
-                    self.selectionDate.removeDate(cell.currentDate)
-                    cell.deSelectedForLabelColor()
-                }
-            case .range:
-                self.selectionDate.addDate(cell.currentDate)
-                if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
-                    let lowerBound = sectionBoundForVisibleItems.lowerBound,
-                    let upperBound = sectionBoundForVisibleItems.upperBound {
-                    
-                    let needToUpdateSections = IndexSet(lowerBound ... upperBound)
-                    self.collectionView?.reloadSections(needToUpdateSections)
-                }
+            self.selectionDate.addDate(cell.currentDate)
+            if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
+                let lowerBound = sectionBoundForVisibleItems.lowerBound,
+                let upperBound = sectionBoundForVisibleItems.upperBound {
+                
+                let needToUpdateSections = IndexSet(lowerBound ... upperBound)
+                self.collectionView?.reloadSections(needToUpdateSections)
             }
         }
     }
@@ -273,14 +242,14 @@ open class EPCalendarPicker: UICollectionViewController {
     
     internal func onTouchCancelButton() {
        //TODO: Create a cancel delegate
-        calendarDelegate?.epCalendarPicker!(self, didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
+        calendarDelegate?.epCalendarPicker(self, didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
         dismiss(animated: true, completion: nil)
         
     }
     
     internal func onTouchDoneButton() {
         //gathers all the selected dates and pass it to the delegate
-        calendarDelegate?.epCalendarPicker!(self, didSelectMultipleDate: self.selectionDate.multipleDates)
+        calendarDelegate?.epCalendarPicker(self, didSelectDate: self.selectionDate.rangeDate)
         dismiss(animated: true, completion: nil)
     }
 

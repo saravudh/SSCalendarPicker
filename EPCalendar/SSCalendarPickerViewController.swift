@@ -13,7 +13,6 @@ class SSCalendarPickerViewController: UIViewController {
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
     var startDate: Date = EPDefaults.startDate
-    var selectionType: SelectionType = EPDefaults.selectionType
     var selectedDates: [Date]?
     open var showsTodaysButton: Bool = true
     open var todayTintColor: UIColor = EPDefaults.todayTintColor
@@ -38,7 +37,7 @@ class SSCalendarPickerViewController: UIViewController {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
-                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear, selectionType: self.selectionType, selectedDates: self.selectedDates)
+                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear, selectedDates: self.selectedDates)
                 calendarPicker.calendarDelegate = self.calendarDelegate
                 calendarPicker.startDate = self.startDate
                 calendarPicker.hightlightsToday = true
@@ -67,10 +66,8 @@ class SSCalendarPickerViewController: UIViewController {
         
         var arrayBarButtons  = [UIBarButtonItem]()
         
-        if self.selectionType == .multiple || self.selectionType == .range {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchDoneButton))
-            arrayBarButtons.append(doneButton)
-        }
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchDoneButton))
+        arrayBarButtons.append(doneButton)
         
         if showsTodaysButton {
             let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))
