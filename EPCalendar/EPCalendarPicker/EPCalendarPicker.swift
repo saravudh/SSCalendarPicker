@@ -19,7 +19,6 @@ public protocol EPCalendarPickerDelegate{
 open class EPCalendarPicker: UICollectionViewController {
 
     open var calendarDelegate : EPCalendarPickerDelegate?
-    open var selectionDate: SSSelectionDate
     
     open var dayDisabledTintColor: UIColor
     open var monthTitleColor: UIColor
@@ -75,14 +74,12 @@ open class EPCalendarPicker: UICollectionViewController {
         }
     }
 
-    public func inititlizeProperties(startYear: Int, endYear: Int, selectedDates: [Date]?) {
+    public func inititlizeProperties(startYear: Int, endYear: Int) {
         self.startYear = startYear
         self.endYear = endYear
-        self.selectionDate = SSSelectionDate(selectedDates: selectedDates)
-    }    
+    }
 
     required public init?(coder aDecoder: NSCoder) {
-        self.selectionDate = SSSelectionDate(selectedDates: nil)
         self.startYear = EPDefaults.startYear
         self.endYear = EPDefaults.endYear
 
@@ -157,8 +154,8 @@ open class EPCalendarPicker: UICollectionViewController {
             // end set cell type
             
             let isCellDateIsPresentDateFromNextMonth = (firstDayOfThisMonth.month() != currentDate.month())
-            let isSelected = self.selectionDate.isSelectedDate(date: currentDate)
-            if (isSelected != .unselected) && !isCellDateIsPresentDateFromNextMonth {
+            
+            if let isSelected = self.cover?.selectionDate.isSelectedDate(date: currentDate), (isSelected != .unselected) && !isCellDateIsPresentDateFromNextMonth {
                 switch isSelected {
                 case .between:
                     cell.selectedIntervalCellForLabelColor()
@@ -227,7 +224,7 @@ open class EPCalendarPicker: UICollectionViewController {
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
         if cell.isCellSelectable! {
-            self.selectionDate.addDate(cell.currentDate)
+            self.cover?.selectionDate.addDate(cell.currentDate)
             if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
                 let lowerBound = sectionBoundForVisibleItems.lowerBound,
                 let upperBound = sectionBoundForVisibleItems.upperBound {
@@ -247,11 +244,7 @@ open class EPCalendarPicker: UICollectionViewController {
         
     }
     
-    internal func onTouchDoneButton() {
-        //gathers all the selected dates and pass it to the delegate
-        calendarDelegate?.epCalendarPicker(self, didSelectDate: self.selectionDate.rangeDate)
-        dismiss(animated: true, completion: nil)
-    }
+
 
     internal func onTouchTodayButton() {
         scrollToToday()

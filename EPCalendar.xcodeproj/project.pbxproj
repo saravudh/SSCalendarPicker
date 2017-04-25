@@ -16,7 +16,6 @@
 		F4C1C9C21BE7A306001AA643 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9C01BE7A306001AA643 /* Main.storyboard */; };
 		F4C1C9C41BE7A306001AA643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9C31BE7A306001AA643 /* Assets.xcassets */; };
 		F4C1C9C71BE7A306001AA643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9C51BE7A306001AA643 /* LaunchScreen.storyboard */; };
-		F4C1C9D21BE7A306001AA643 /* EPCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9D11BE7A306001AA643 /* EPCalendarTests.swift */; };
 		F4C1C9DE1BE7A347001AA643 /* EPCalendarPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9DD1BE7A347001AA643 /* EPCalendarPicker.swift */; };
 		F4C1C9E11BE7A5B4001AA643 /* EPCalendarConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9E01BE7A5B4001AA643 /* EPCalendarConstants.swift */; };
 		F4D8C5BD1C0ABCC500F1F769 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D8C5BC1C0ABCC500F1F769 /* EPExtensions.swift */; };
@@ -48,7 +47,6 @@
 		F4C1C9C61BE7A306001AA643 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4C1C9C81BE7A306001AA643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4C1C9CD1BE7A306001AA643 /* EPCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EPCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4C1C9D11BE7A306001AA643 /* EPCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EPCalendarTests.swift; sourceTree = "<group>"; };
 		F4C1C9D31BE7A306001AA643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4C1C9DD1BE7A347001AA643 /* EPCalendarPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EPCalendarPicker.swift; path = EPCalendarPicker/EPCalendarPicker.swift; sourceTree = "<group>"; };
 		F4C1C9E01BE7A5B4001AA643 /* EPCalendarConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EPCalendarConstants.swift; path = EPCalendarPicker/EPCalendarConstants.swift; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 		F4C1C9D01BE7A306001AA643 /* EPCalendarTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4C1C9D11BE7A306001AA643 /* EPCalendarTests.swift */,
 				F4C1C9D31BE7A306001AA643 /* Info.plist */,
 				D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */,
 			);
@@ -121,7 +118,6 @@
 		F4C1C9DC1BE7A318001AA643 /* EPCalendarPicker */ = {
 			isa = PBXGroup;
 			children = (
-				F4C1C9DD1BE7A347001AA643 /* EPCalendarPicker.swift */,
 				F4C1C9E01BE7A5B4001AA643 /* EPCalendarConstants.swift */,
 				F4F542BC1BF064A900749161 /* EPCalendarCell1.swift */,
 				F4F542BD1BF064A900749161 /* EPCalendarCell1.xib */,
@@ -130,6 +126,7 @@
 				D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */,
 				D720872F1EAE1CB2004FBC09 /* SSCalendarPicker.storyboard */,
 				D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */,
+				F4C1C9DD1BE7A347001AA643 /* EPCalendarPicker.swift */,
 			);
 			name = EPCalendarPicker;
 			sourceTree = "<group>";
@@ -254,7 +251,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4C1C9D21BE7A306001AA643 /* EPCalendarTests.swift in Sources */,
 				D7A240121EA334B6001A25CD /* SSDatePickerDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

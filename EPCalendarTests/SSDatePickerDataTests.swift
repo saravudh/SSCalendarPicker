@@ -20,87 +20,12 @@ class SSDatePickerDataTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSingleData() {
-        let date1 = Date(year : 2017, month : 1, day : 1)
-        let date2 = Date(year : 2017, month : 1, day : 2)
-        let selectionDate = SSSelectionDate(selectionType: .single, selectedDates: nil)
-        
-        XCTAssertFalse(selectionDate.hasData())
-        selectionDate.addDate(date1)
-        XCTAssertTrue(selectionDate.hasData())
-        
-        XCTAssertEqual(date1, selectionDate.singleDate)
-        XCTAssertEqual(0, selectionDate.multipleDates.count)
-        XCTAssertNil(selectionDate.rangeDate)
-        
-        selectionDate.removeDate(date2)
-        XCTAssertEqual(date1, selectionDate.singleDate)
-
-        selectionDate.removeDate(date1)
-        XCTAssertFalse(selectionDate.hasData())
-        
-        selectionDate.addDate(date2)
-        XCTAssertEqual(date2, selectionDate.singleDate)
-    }
-    
-    func testMultipleData() {
-        let date1 = Date(year : 2017, month : 1, day : 1)
-        let date2 = Date(year : 2017, month : 2, day : 1)
-        let date21 = Date(year : 2017, month : 2, day : 1)
-        let date3 = Date(year : 2017, month : 3, day : 3)
-        let dateXX = Date(year : 2017, month : 11, day : 5)
-        
-        // add
-        let selectionDate = SSSelectionDate(selectionType: .multiple, selectedDates: nil)
-        XCTAssertFalse(selectionDate.hasData())
-        selectionDate.addDate(date1)
-        XCTAssertTrue(selectionDate.hasData())
-        XCTAssertEqual(1, selectionDate.multipleDates.count)
-        XCTAssertTrue(selectionDate.multipleDates.contains(date1))
-        
-        selectionDate.addDate(date2)
-        XCTAssertEqual(2, selectionDate.multipleDates.count)
-        XCTAssertTrue(selectionDate.multipleDates.contains(date1))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date2))
-
-        selectionDate.addDate(date3)
-        XCTAssertEqual(3, selectionDate.multipleDates.count)
-        XCTAssertTrue(selectionDate.multipleDates.contains(date1))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date2))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date3))
-
-        selectionDate.addDate(date21)
-        XCTAssertEqual(3, selectionDate.multipleDates.count)
-        XCTAssertTrue(selectionDate.multipleDates.contains(date1))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date2))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date21))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date3))
-        
-        // remove
-        selectionDate.removeDate(dateXX)
-        XCTAssertEqual(3, selectionDate.multipleDates.count)
-        
-        selectionDate.removeDate(date1)
-        XCTAssertEqual(2, selectionDate.multipleDates.count)
-        XCTAssertFalse(selectionDate.multipleDates.contains(date1))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date2))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date21))
-        XCTAssertTrue(selectionDate.multipleDates.contains(date3))
-
-        selectionDate.removeDate(date2)
-        XCTAssertEqual(1, selectionDate.multipleDates.count)
-        XCTAssertTrue(selectionDate.multipleDates.contains(date3))
-
-        selectionDate.removeDate(date3)
-        XCTAssertEqual(0, selectionDate.multipleDates.count)
-    }
-    
     func testRangeDataNormalData() {
         let date1 = Date(year : 2017, month : 1, day : 1)
         let date2 = Date(year : 2017, month : 2, day : 1)
 
         // [1] create SSSelectionDate object -> anil
-        let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate = SSSelectionDate(selectedDates: nil)
         XCTAssertFalse(selectionDate.hasData())
         XCTAssertNil(selectionDate.rangeDate)
 
@@ -142,7 +67,7 @@ class SSDatePickerDataTests: XCTestCase {
         let date4 = Date(year : 2017, month : 3, day : 10)
         
         // [1] add date2 then date1
-        let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate = SSSelectionDate(selectedDates: nil)
         selectionDate.addDate(date2)
         selectionDate.addDate(date1)
         let rangeDate1 = selectionDate.rangeDate!
@@ -224,7 +149,7 @@ class SSDatePickerDataTests: XCTestCase {
         let date3 = Date(year : 2017, month : 3, day : 1)
         
         // [1] add date1 and date2 then remove date2
-        let selectionDate1 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate1 = SSSelectionDate(selectedDates: nil)
         selectionDate1.addDate(date1)
         selectionDate1.addDate(date2)
         selectionDate1.removeDate(date2)
@@ -233,14 +158,14 @@ class SSDatePickerDataTests: XCTestCase {
         XCTAssertNil(rangeDate1.end)
         
         // [2] add date1 and date2 then remove date1
-        let selectionDate2 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate2 = SSSelectionDate(selectedDates: nil)
         selectionDate2.addDate(date1)
         selectionDate2.addDate(date2)
         selectionDate2.removeDate(date1)
         XCTAssertFalse(selectionDate2.hasData())
         
         // [3] add date1 and date2 then remove date3
-        let selectionDate3 = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate3 = SSSelectionDate(selectedDates: nil)
         selectionDate3.addDate(date1)
         selectionDate3.addDate(date2)
         selectionDate3.removeDate(date3)
@@ -253,7 +178,7 @@ class SSDatePickerDataTests: XCTestCase {
         let date1 = Date(year : 2017, month : 1, day : 1)
         let date2 = Date(year : 2017, month : 2, day : 1)
         let date3 = Date(year : 2017, month : 3, day : 3)
-        let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        let selectionDate = SSSelectionDate(selectedDates: nil)
         
         selectionDate.addDate(date2)
         selectionDate.addDate(date1)
@@ -267,63 +192,14 @@ class SSDatePickerDataTests: XCTestCase {
         XCTAssertEqual(date3, rangeDate2.end)
     }
 
-    
-    func testSingleDataAddOutOfBoundData() {
-        let minDate = Date(year : 2017, month : 1, day : 1)
-        let maxDate = Date(year : 2017, month : 2, day : 1)
-        let date = Date(year : 2017, month : 3, day : 3)
-        let selectionDate = SSSelectionDate(selectionType: .single, selectedDates: nil, minDate: minDate, maxDate: maxDate)
-        selectionDate.addDate(date)
-        XCTAssertFalse(selectionDate.hasData())
-        XCTAssertNil(selectionDate.singleDate)
-    }
-    
-    func testMultipleAddOutOfBoundData() {
-        let minDate = Date(year : 2017, month : 1, day : 1)
-        let maxDate = Date(year : 2017, month : 2, day : 1)
-        let date = Date(year : 2017, month : 3, day : 3)
-        let selectionDate = SSSelectionDate(selectionType: .multiple, selectedDates: nil, minDate: minDate, maxDate: maxDate)
-        selectionDate.addDate(date)
-        XCTAssertFalse(selectionDate.hasData())
-        XCTAssertEqual(0, selectionDate.multipleDates.count)
-    }
-    
     func testRangeDataAddOutOfBoundData() {
         let minDate = Date(year : 2017, month : 1, day : 1)
         let maxDate = Date(year : 2017, month : 2, day : 1)
         let date = Date(year : 2017, month : 3, day : 3)
-        let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil, minDate: minDate, maxDate: maxDate)
+        let selectionDate = SSSelectionDate(selectedDates: nil, minDate: minDate, maxDate: maxDate)
         selectionDate.addDate(date)
         XCTAssertFalse(selectionDate.hasData())
         XCTAssertNil(selectionDate.rangeDate)
-    }
-    
-    func testIsSelectedDateSingle() {
-        let minDate = Date(year : 2000, month : 1, day : 1)
-        let maxDate = Date(year : 2100, month : 12, day : 31)
-        let date = Date(year : 2017, month : 1, day : 1)
-        let expected = Date(year : 2017, month : 1, day : 1)
-        let unexpected = Date(year : 2017, month : 1, day : 2)
-        let selectionDate = SSSelectionDate(selectionType: .single, selectedDates: nil, minDate: minDate, maxDate: maxDate)
-        selectionDate.addDate(date)
-        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected))
-        XCTAssertEqual(SSSelectedType.unselected, selectionDate.isSelectedDate(date: unexpected))
-    }
-    
-    func testIsSelectedDateMultiple() {
-        let minDate = Date(year : 2000, month : 1, day : 1)
-        let maxDate = Date(year : 2100, month : 12, day : 31)
-        let date1 = Date(year : 2017, month : 2, day : 1)
-        let date2 = Date(year : 2017, month : 3, day : 1)
-        let expected1 = Date(year : 2017, month : 2, day : 1)
-        let expected2 = Date(year : 2017, month : 3, day : 1)
-        let unexpected = Date(year : 2017, month : 1, day : 2)
-        let selectionDate = SSSelectionDate(selectionType: .multiple, selectedDates: nil, minDate: minDate, maxDate: maxDate)
-        selectionDate.addDate(date1)
-        selectionDate.addDate(date2)
-        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected1))
-        XCTAssertEqual(SSSelectedType.beginOrSelected, selectionDate.isSelectedDate(date: expected2))
-        XCTAssertEqual(SSSelectedType.unselected, selectionDate.isSelectedDate(date: unexpected))
     }
     
     func testIsSelectedDateRange() {
@@ -338,7 +214,7 @@ class SSDatePickerDataTests: XCTestCase {
         let unexpected1 = Date(year : 2017, month : 1, day : 31)
         let unexpected2 = Date(year : 2017, month : 4, day : 1)
         
-        let selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil, minDate: minDate, maxDate: maxDate)
+        let selectionDate = SSSelectionDate(selectedDates: nil, minDate: minDate, maxDate: maxDate)
         selectionDate.addDate(date1)
         selectionDate.addDate(date2)
         

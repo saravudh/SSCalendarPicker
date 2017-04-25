@@ -13,11 +13,11 @@ class SSCalendarPickerViewController: UIViewController {
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
     var startDate: Date = EPDefaults.startDate
-    var selectedDates: [Date]?
     open var showsTodaysButton: Bool = true
     open var todayTintColor: UIColor = EPDefaults.todayTintColor
     private var epCalendar: EPCalendarPicker?
     var tintColor: UIColor = EPDefaults.tintColor
+    open var selectionDate: SSSelectionDate = SSSelectionDate(selectedDates: nil)
 
     @IBOutlet weak var lblFirst: UILabel!
     @IBOutlet weak var lblSecond: UILabel!
@@ -31,13 +31,15 @@ class SSCalendarPickerViewController: UIViewController {
     @IBOutlet weak var lblReturnTitle: UILabel!
     @IBOutlet weak var lblReturnDate: UILabel!
 
-
+    public func setSelectedDate(begin: Date, end: Date?) {
+        
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EPCalendarPickerSegue" {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
-                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear, selectedDates: self.selectedDates)
+                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear)
                 calendarPicker.calendarDelegate = self.calendarDelegate
                 calendarPicker.startDate = self.startDate
                 calendarPicker.hightlightsToday = true
@@ -66,7 +68,7 @@ class SSCalendarPickerViewController: UIViewController {
         
         var arrayBarButtons  = [UIBarButtonItem]()
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchDoneButton))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(onTouchDoneButton))
         arrayBarButtons.append(doneButton)
         
         if showsTodaysButton {
@@ -75,6 +77,11 @@ class SSCalendarPickerViewController: UIViewController {
             todayButton.tintColor = todayTintColor
         }
         self.navigationItem.rightBarButtonItems = arrayBarButtons
+    }
+    
+    internal func onTouchDoneButton() {
+        //gathers all the selected dates and pass it to the delegate
+        dismiss(animated: true, completion: nil)
     }
     
     private func setDayHeader() {

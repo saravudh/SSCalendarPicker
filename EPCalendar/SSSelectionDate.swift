@@ -18,7 +18,8 @@ public enum SSSelectedType: Int {
 public class SSSelectionDate {
     private var minDate: Date
     private var maxDate: Date
-    fileprivate var arrSelectedDates = [Date]()
+    private var beginDate: Date?
+    private var endDate: Date?
     
     init(selectedDates: [Date]?, minDate: Date, maxDate: Date) {
         self.minDate = minDate
@@ -36,59 +37,55 @@ public class SSSelectionDate {
     }
     
     func removeDate(_ aDate: Date) {
-        if self.arrSelectedDates.contains(aDate) {
-            if self.arrSelectedDates[0] == aDate {
-                self.arrSelectedDates.removeAll()
-            } else {
-                self.arrSelectedDates.remove(at: 1)
-            }
+        if self.beginDate == aDate {
+            self.beginDate = nil
+        } else if endDate == aDate {
+            self.endDate = nil
         }
     }
     
     func addDate(_ aDate: Date) {
         if aDate >= self.minDate && aDate <= self.maxDate {
-            if self.arrSelectedDates.count == 0 {
-                self.arrSelectedDates.append(aDate)
-            } else if self.arrSelectedDates.count == 1 {
-                if aDate < self.arrSelectedDates[0] {
-                    self.arrSelectedDates[0] = aDate
-                } else if aDate > self.arrSelectedDates[0] {
-                    self.arrSelectedDates.append(aDate)
+            if let beginDate = self.beginDate {
+                if self.endDate == nil {
+                    if aDate < beginDate {
+                        self.beginDate = aDate
+                    } else if aDate > beginDate {
+                        self.endDate = aDate
+                    }
+                } else {
+                    self.beginDate = aDate
+                    self.endDate = nil
                 }
-            } else if self.arrSelectedDates.count == 2 {
-                self.arrSelectedDates.removeAll()
-                self.arrSelectedDates.append(aDate)
+            } else {
+                self.beginDate = aDate
             }
         }
     }
     
     func removeAll() {
-        self.arrSelectedDates.removeAll()
+        self.beginDate = nil
+        self.endDate = nil
     }
     
     func hasData() -> Bool {
-        return self.arrSelectedDates.count > 0
+        return self.beginDate != nil
     }
     
     var rangeDate: (begin: Date, end: Date?)? {
         get {
-            if self.arrSelectedDates.count > 1 {
-                return (begin: self.arrSelectedDates[0], end: self.arrSelectedDates[1])
-            } else if self.arrSelectedDates.count > 0 {
-                return (begin: self.arrSelectedDates[0], end: nil)
+            if let _ = self.beginDate {
+                return (begin: self.beginDate!, end: self.endDate)
             }
             return nil
         }
     }
     
     func isSelectedDate(date: Date) -> SSSelectedType {
-        let isSelectedDate = self.arrSelectedDates.contains(date)
-        if isSelectedDate {
-            if self.arrSelectedDates[0] == date {
-                return .beginOrSelected
-            } else if self.arrSelectedDates.count == 2 && self.arrSelectedDates[1] == date {
-                return .end
-            }
+        if self.beginDate == date {
+            return .beginOrSelected
+        } else if self.endDate == date {
+            return .end
         } else {
             if let rangeDate = self.rangeDate, let rangeDateEnd = rangeDate.end {
                 if date > rangeDate.begin && date < rangeDateEnd {
