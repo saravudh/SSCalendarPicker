@@ -1,15 +1,21 @@
 //
-//  EPCalendarHeaderView.swift
+//  SSCalendarPickerViewController.swift
 //  EPCalendar
 //
-//  Created by Prabaharan Elangovan on 09/11/15.
-//  Copyright © 2015 Prabaharan Elangovan. All rights reserved.
+//  Created by Saravudh Sinsomros on 4/24/2560 BE.
+//  Copyright © 2560 Saravudh Sinsomros. All rights reserved.
 //
 
 import UIKit
 
-class EPCalendarHeaderView: UICollectionReusableView {
-
+class SSCalendarPickerViewController: UIViewController {
+    var calendarDelegate: EPCalendarPickerDelegate?
+    var startYear: Int = EPDefaults.startYear
+    var endYear: Int = EPDefaults.endYear
+    var startDate: Date = EPDefaults.startDate
+    var selectionType: SelectionType = EPDefaults.selectionType
+    var selectedDates: [Date]?
+    
     @IBOutlet weak var lblFirst: UILabel!
     @IBOutlet weak var lblSecond: UILabel!
     @IBOutlet weak var lblThird: UILabel!
@@ -17,11 +23,29 @@ class EPCalendarHeaderView: UICollectionReusableView {
     @IBOutlet weak var lblFifth: UILabel!
     @IBOutlet weak var lblSixth: UILabel!
     @IBOutlet weak var lblSeventh: UILabel!
-    @IBOutlet weak var lblTitle: UILabel!
+
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "EPCalendarPickerSegue" {
+            if let calendarPicker = segue.destination as? EPCalendarPicker {
+                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear, selectionType: self.selectionType, selectedDates: self.selectedDates)
+                calendarPicker.calendarDelegate = self.calendarDelegate
+                calendarPicker.startDate = self.startDate
+                calendarPicker.hightlightsToday = true
+                calendarPicker.showsTodaysButton = true
+                calendarPicker.hideDaysFromOtherMonth = true
+                calendarPicker.tintColor = UIColor.orange
+                //calendarPicker.barTintColor = UIColor.greenColor()
+                calendarPicker.dayDisabledTintColor = UIColor.gray
+                
+                self.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
+                self.updateWeekendLabelColor(EPDefaults.weekendTintColor)
+                self.setDayHeader()
+            }
+        }
+    }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    private func setDayHeader() {
         let calendar = Calendar.current
         let weeksDayList = calendar.shortWeekdaySymbols
         

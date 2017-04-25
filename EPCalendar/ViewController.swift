@@ -13,21 +13,18 @@ class ViewController: UIViewController, EPCalendarPickerDelegate {
     @IBOutlet weak var txtViewDetail: UITextView!
     @IBOutlet weak var btnShowMeCalendar: UIButton!
 
-    @IBAction func onTouchShowMeCalendarButton(_ sender: AnyObject) {
-        let date1 = Date(year: 2017, month: 5, day: 1)
-        let date2 = Date(year: 2017, month: 6, day: 11)
-        let date3 = Date(year: 2017, month: 6, day: 12)
-        let date4 = Date(year: 2017, month: 6, day: 13)
-        let calendarPicker = EPCalendarPicker(startYear: 2016, endYear: 2017, selectionType: .multiple, selectedDates: [date1, date2, date3, date4])
+    @IBAction func onTouchShowMeCalendarButton(_ sender: AnyObject) {        
+        let calendarPicker = UIStoryboard(name: "SSCalendarPicker", bundle: nil).instantiateInitialViewController() as! SSCalendarPickerViewController
+        
         calendarPicker.calendarDelegate = self
+        calendarPicker.startYear = 2016
+        calendarPicker.endYear = 2017
         calendarPicker.startDate = Date()
-        calendarPicker.hightlightsToday = true
-        calendarPicker.showsTodaysButton = true
-        calendarPicker.hideDaysFromOtherMonth = true
-        calendarPicker.tintColor = UIColor.orange
-//        calendarPicker.barTintColor = UIColor.greenColor()
-        calendarPicker.dayDisabledTintColor = UIColor.gray
         calendarPicker.title = "Date Picker"
+
+        
+        
+        
         
 //        calendarPicker.backgroundImage = UIImage(named: "background_image")
 //        calendarPicker.backgroundColor = UIColor.blueColor()

@@ -12,7 +12,8 @@ struct EPDefaults  {
     //Values
     static let startYear = 2015
     static let endYear = 2016
-    static let selectionType = SelectionType.single
+    static let startDate = Date(year : 2017, month : 1, day : 1)
+    static let selectionType = SelectionType.range
     
     //Colors
     static let dayDisabledTintColor = UIColor.lightGray

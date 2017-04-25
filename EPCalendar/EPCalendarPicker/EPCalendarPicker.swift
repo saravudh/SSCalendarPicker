@@ -25,7 +25,6 @@ open class EPCalendarPicker: UICollectionViewController {
     open var tintColor: UIColor
     
     open var dayDisabledTintColor: UIColor
-    open var weekendTintColor: UIColor
     open var todayTintColor: UIColor
     open var monthTitleColor: UIColor
     
@@ -43,6 +42,14 @@ open class EPCalendarPicker: UICollectionViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        //Layout creation
+        let layout = UICollectionViewFlowLayout()
+        
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 4
+        layout.headerReferenceSize = EPDefaults.headerSize
+        self.collectionView?.collectionViewLayout = layout
+        
         // setup Navigationbar
         self.navigationController?.navigationBar.tintColor = self.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
@@ -95,48 +102,27 @@ open class EPCalendarPicker: UICollectionViewController {
         
     }
     
-    public convenience init(){
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: EPDefaults.selectionType, selectedDates: nil);
-    }
-    
-    public convenience init(startYear: Int, endYear: Int) {
-        self.init(startYear:startYear, endYear:endYear, selectionType: EPDefaults.selectionType, selectedDates: nil)
-    }
-    
-    public convenience init(selectionType: SelectionType) {
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: selectionType, selectedDates: nil)
-    }
-    
-    public convenience init(startYear: Int, endYear: Int, selectionType: SelectionType) {
-        self.init(startYear: EPDefaults.startYear, endYear: EPDefaults.endYear, selectionType: selectionType, selectedDates: nil)
-    }
-    
-    public init(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
+
+    public func inititlizeProperties(startYear: Int, endYear: Int, selectionType: SelectionType, selectedDates: [Date]?) {
         self.startYear = startYear
         self.endYear = endYear
         self.selectionDate = SSSelectionDate(selectionType: selectionType, selectedDates: selectedDates)
         
-        //Text color initializations
-        self.tintColor = EPDefaults.tintColor
-        self.barTintColor = EPDefaults.barTintColor
-        self.dayDisabledTintColor = EPDefaults.dayDisabledTintColor
-        self.weekendTintColor = EPDefaults.weekendTintColor
-        self.monthTitleColor = EPDefaults.monthTitleColor
-        self.todayTintColor = EPDefaults.todayTintColor
-
-        //Layout creation
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionHeadersPinToVisibleBounds = true
-
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 4
-        layout.headerReferenceSize = EPDefaults.headerSize
-        super.init(collectionViewLayout: layout)
     }
     
 
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.selectionDate = SSSelectionDate(selectionType: .range, selectedDates: nil)
+        self.startYear = EPDefaults.startYear
+        self.endYear = EPDefaults.endYear
+
+        //Text color initializations
+        self.tintColor = EPDefaults.tintColor
+        self.barTintColor = EPDefaults.barTintColor
+        self.dayDisabledTintColor = EPDefaults.dayDisabledTintColor
+        self.monthTitleColor = EPDefaults.monthTitleColor
+        self.todayTintColor = EPDefaults.todayTintColor
+        super.init(coder: aDecoder)
     }
 
     // MARK: UICollectionViewDataSource
@@ -263,15 +249,14 @@ open class EPCalendarPicker: UICollectionViewController {
     override open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         if kind == UICollectionElementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as! EPCalendarHeaderView
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath)
+            let headerLblTitle = header.viewWithTag(101) as! UILabel
             
             let startDate = Date(year: startYear, month: 1, day: 1)
             let firstDayOfMonth = startDate.dateByAddingMonths(indexPath.section)
             
-            header.lblTitle.text = firstDayOfMonth.monthNameFull()
-            header.lblTitle.textColor = monthTitleColor
-            header.updateWeekdaysLabelColor(EPDefaults.weekdayTintColor)
-            header.updateWeekendLabelColor(weekendTintColor)
+            headerLblTitle.text = firstDayOfMonth.monthNameFull()
+            headerLblTitle.textColor = monthTitleColor
             header.backgroundColor = UIColor.white
             return header;
         }
