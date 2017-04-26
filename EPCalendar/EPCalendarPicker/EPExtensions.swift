@@ -74,7 +74,7 @@ extension Date {
         return calendar.date(from: dateComponent)!
     }
     
-    init(year : Int, month : Int, day : Int) {
+    public init(year : Int, month : Int, day : Int) {
         
         let calendar = Calendar.current
         var dateComponent = DateComponents()

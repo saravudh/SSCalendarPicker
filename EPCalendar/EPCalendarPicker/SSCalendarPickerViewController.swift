@@ -14,11 +14,11 @@ public protocol SSCalendarPickerDelegate{
 }
 
 open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
-    var calendarDelegate: SSCalendarPickerDelegate?
-    var startMonth: Int = EPDefaults.startMonth
-    var startYear: Int = EPDefaults.startYear
-    var endYear: Int = EPDefaults.endYear
-    var startDate: Date = EPDefaults.startDate
+    public var calendarDelegate: SSCalendarPickerDelegate?
+    public var startMonth: Int = EPDefaults.startMonth
+    public var startYear: Int = EPDefaults.startYear
+    public var endYear: Int = EPDefaults.endYear
+    public var startDate: Date = EPDefaults.startDate
     private var epCalendar: EPCalendarPicker?
 
     open var selectionDate: SSSelectionDate
@@ -38,13 +38,13 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
     @IBOutlet weak var btnDoneCoverView: UIView!
 
     @IBOutlet weak var btnHeight: NSLayoutConstraint!
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         let minDate = Date(year: 2017, month: 1, day: 1)
         let maxDate = Date(year: 2037, month: 12, day: 31)
         selectionDate = SSSelectionDate(minDate: minDate, maxDate: maxDate)
         super.init(coder: aDecoder)
     }
-    func dateDidChange() {
+    public func dateDidChange() {
         if let beginDate = self.selectionDate.departDate {
             self.lblDepartDate.text = beginDate.dateString()
             self.lblDepartTitle.textColor = EPDefaults.tintColor
@@ -107,7 +107,7 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
             self.btnHeight.constant = 0
         }
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EPCalendarPickerSegue" {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
                 self.selectionDate.delegate = self
