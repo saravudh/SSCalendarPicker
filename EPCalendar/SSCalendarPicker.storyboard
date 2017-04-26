@@ -162,24 +162,51 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xn0-57-SeJ">
-                                <rect key="frame" x="0.0" y="100" width="375" height="567"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="507"/>
                                 <connections>
                                     <segue destination="BqI-08-k8o" kind="embed" identifier="EPCalendarPickerSegue" id="iXZ-O0-Wwx"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UY3-ak-cIP">
+                                <rect key="frame" x="-4" y="607" width="383" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kU-Wl-dze">
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="btnDoneAction:" destination="mvE-qi-VFR" eventType="touchUpInside" id="Aby-mD-LwU"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="FAb-Wk-pI4"/>
+                                    <constraint firstAttribute="bottom" secondItem="8kU-Wl-dze" secondAttribute="bottom" id="Hyh-ND-Sps"/>
+                                    <constraint firstAttribute="trailing" secondItem="8kU-Wl-dze" secondAttribute="trailing" id="JdP-YA-ZGY"/>
+                                    <constraint firstItem="8kU-Wl-dze" firstAttribute="leading" secondItem="UY3-ak-cIP" secondAttribute="leading" id="svs-6f-AO6"/>
+                                    <constraint firstItem="8kU-Wl-dze" firstAttribute="top" secondItem="UY3-ak-cIP" secondAttribute="top" id="uQM-Wd-82x"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="UY3-ak-cIP" firstAttribute="leading" secondItem="aAw-sL-n4P" secondAttribute="leadingMargin" constant="-20" id="29E-pc-GhN"/>
                             <constraint firstItem="Xn0-57-SeJ" firstAttribute="leading" secondItem="aAw-sL-n4P" secondAttribute="leadingMargin" constant="-16" id="3c3-bV-Qza"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UY3-ak-cIP" secondAttribute="trailing" constant="-20" id="B3o-1V-eM5"/>
                             <constraint firstItem="Xn0-57-SeJ" firstAttribute="top" secondItem="Jn6-VQ-Mx0" secondAttribute="bottom" id="BMX-IC-ld6"/>
                             <constraint firstItem="Jn6-VQ-Mx0" firstAttribute="leading" secondItem="aAw-sL-n4P" secondAttribute="leadingMargin" constant="-16" id="IG8-qH-TN4"/>
+                            <constraint firstItem="UY3-ak-cIP" firstAttribute="top" secondItem="Xn0-57-SeJ" secondAttribute="bottom" id="P4G-Fq-2Jb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Xn0-57-SeJ" secondAttribute="trailing" constant="-16" id="bi1-8q-rCb"/>
-                            <constraint firstItem="d9t-mx-e0m" firstAttribute="top" secondItem="Xn0-57-SeJ" secondAttribute="bottom" id="jmg-fL-TN7"/>
+                            <constraint firstItem="d9t-mx-e0m" firstAttribute="top" secondItem="UY3-ak-cIP" secondAttribute="bottom" id="g22-zJ-CdJ"/>
                             <constraint firstItem="Jn6-VQ-Mx0" firstAttribute="top" secondItem="KJy-73-C7f" secondAttribute="bottom" id="p4d-BO-zob"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Jn6-VQ-Mx0" secondAttribute="trailing" constant="-16" id="uTX-4I-eTY"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnDone" destination="8kU-Wl-dze" id="Wnd-Lo-3K8"/>
+                        <outlet property="btnDoneCoverView" destination="UY3-ak-cIP" id="Gv7-jQ-lFJ"/>
+                        <outlet property="btnHeight" destination="FAb-Wk-pI4" id="DNR-qa-h2y"/>
                         <outlet property="lblDepartDate" destination="GG8-kq-cPp" id="AxF-Nb-yNk"/>
                         <outlet property="lblDepartTitle" destination="i1j-rU-4cB" id="kom-Rm-GvJ"/>
                         <outlet property="lblFifth" destination="fwv-q7-bWq" id="hGT-uw-Yfs"/>
@@ -201,8 +228,8 @@
         <scene sceneID="XYg-fb-w6N">
             <objects>
                 <collectionViewController id="BqI-08-k8o" customClass="EPCalendarPicker" customModule="EPCalendar" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="OR3-qk-1qt">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="OR3-qk-1qt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="507"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KJK-0s-dor">

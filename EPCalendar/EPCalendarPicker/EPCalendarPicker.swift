@@ -250,10 +250,7 @@ open class EPCalendarPicker: UICollectionViewController {
        //TODO: Create a cancel delegate
         calendarDelegate?.epCalendarPicker(self, didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
         dismiss(animated: true, completion: nil)
-        
     }
-    
-
 
     internal func onTouchTodayButton() {
         scrollToToday()
@@ -268,7 +265,7 @@ open class EPCalendarPicker: UICollectionViewController {
 
         let month = date.month()
         let year = date.year()
-        let section = ((year - startYear) * 12) + month
+        let section = ((year - startYear) * 12) + (month - startMonth + 1)
         let indexPath = IndexPath(row:1, section: section-1)
         self.collectionView?.scrollToIndexpathByShowingHeader(indexPath)
     }

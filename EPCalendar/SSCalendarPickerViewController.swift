@@ -14,7 +14,6 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
     var startDate: Date = EPDefaults.startDate
-    open var showsTodaysButton: Bool = true
     private var epCalendar: EPCalendarPicker?
 
     open var selectionDate: SSSelectionDate = SSSelectionDate(selectedDates: nil)
@@ -30,7 +29,10 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     @IBOutlet weak var lblDepartDate: UILabel!
     @IBOutlet weak var lblReturnTitle: UILabel!
     @IBOutlet weak var lblReturnDate: UILabel!
+    @IBOutlet weak var btnDone: UIButton!
+    @IBOutlet weak var btnDoneCoverView: UIView!
 
+    @IBOutlet weak var btnHeight: NSLayoutConstraint!
     func dateDidChange() {
         if let beginDate = self.selectionDate.departDate {
             self.lblDepartDate.text = beginDate.dateString()
@@ -46,6 +48,11 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
             self.lblReturnDate.text = ""
             self.lblReturnTitle.textColor = UIColor.lightGray
         }
+        self.refreshDoneButton()
+    }
+    
+    @IBAction func btnDoneAction(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
     
     func setupColor() {
@@ -53,12 +60,25 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
         self.lblReturnDate.textColor = EPDefaults.tintColor
     }
     
+    private func refreshDoneButton() {
+        if let _ = self.selectionDate.departDate {
+            let btnTitle = (self.selectionDate.returnDate == nil) ? "ONE WAY" : "DONE"
+            self.btnDone.setTitle(btnTitle, for: UIControlState.normal)
+            self.btnDoneCoverView.isHidden = false
+            self.btnHeight.constant = 60
+        } else {
+            self.btnDoneCoverView.isHidden = true
+            self.btnHeight.constant = 0
+        }
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EPCalendarPickerSegue" {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
+                
                 self.selectionDate.delegate = self
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
+                self.refreshDoneButton()
                 calendarPicker.inititlizeProperties(startMonth: self.startMonth, startYear: self.startYear, endYear: self.endYear)
                 calendarPicker.calendarDelegate = self.calendarDelegate
                 calendarPicker.startDate = self.startDate
@@ -76,25 +96,14 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     }
     
     func inititlizeBarButtons(){
+        self.btnDone.tintColor = UIColor.white
+        self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
         let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchCancelButton))
         self.navigationItem.leftBarButtonItem = cancelButton
         
-        var arrayBarButtons  = [UIBarButtonItem]()
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(onTouchDoneButton))
-        arrayBarButtons.append(doneButton)
-        
-        if showsTodaysButton {
-            let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))
-            arrayBarButtons.append(todayButton)
-            todayButton.tintColor = EPDefaults.todayTintColor
-        }
-        self.navigationItem.rightBarButtonItems = arrayBarButtons
-    }
-    
-    internal func onTouchDoneButton() {
-        //gathers all the selected dates and pass it to the delegate
-        dismiss(animated: true, completion: nil)
+        let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))
+        todayButton.tintColor = EPDefaults.todayTintColor
+        self.navigationItem.rightBarButtonItem = todayButton
     }
     
     private func setDayHeader() {
