@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name             = "EPCalendarPicker"
-  s.version          = "1.0.8"
+  s.name             = "SSCalendarPicker"
+  s.version          = "1.0.0"
   s.summary          = "Colourful calendar component for iOS written in Swift"
   s.description      = <<-DESC
 Features
@@ -10,18 +10,13 @@ Features
 4. Option to define the calendar start and ending year
 DESC
 
-  s.homepage         = "https://github.com/ipraba/EPCalendarPicker"
+  s.homepage         = "https://bitbucket.org/saravudh/sscalendarpicker"
   s.license          = 'MIT'
-  s.author           = { "Prabaharan" => "mailprabaharan.e@gmail.com" }
-  s.source           = { :git => "https://github.com/ipraba/EPCalendarPicker.git", :tag => '1.0.8' }
-  s.platform     = :ios, '8.0'
+  s.author           = { "Saravudh Sinsomros" => "saravudh@shorsher.com" }
+  s.source           = { :git => "https://saravudh@bitbucket.org/saravudh/sscalendarpicker.git", :tag => '1.0.10' }
+  s.platform     = :ios, '9.0'
   s.requires_arc = true
   s.source_files = 'EPCalendar/EPCalendarPicker'
   s.frameworks = 'UIKit'
-#  s.resource_bundles = {
-#    'EPCalendarPicker' => [
-#         'EPCalendar/**/*.xib'
-#    ]
-# }
-  s.resources        = ["EPCalendar/EPCalendarPicker/EPCalendarCell1.xib", "EPCalendar/EPCalendarPicker/EPCalendarHeaderView.xib"]
+  s.resources        = ["EPCalendar/EPCalendarPicker/EPCalendarCell1.xib", "EPCalendar/EPCalendarPicker/EPCalendarHeaderView.xib", "EPCalendar/EPCalendarPicker/SSCalendarPicker.storyboard"]
 end
