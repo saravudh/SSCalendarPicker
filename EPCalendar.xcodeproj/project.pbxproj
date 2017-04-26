@@ -35,9 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D720872F1EAE1CB2004FBC09 /* SSCalendarPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SSCalendarPicker.storyboard; sourceTree = "<group>"; };
-		D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSCalendarPickerViewController.swift; sourceTree = "<group>"; };
-		D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSSelectionDate.swift; sourceTree = "<group>"; };
+		D720872F1EAE1CB2004FBC09 /* SSCalendarPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SSCalendarPicker.storyboard; path = EPCalendarPicker/SSCalendarPicker.storyboard; sourceTree = "<group>"; };
+		D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSCalendarPickerViewController.swift; path = EPCalendarPicker/SSCalendarPickerViewController.swift; sourceTree = "<group>"; };
+		D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSSelectionDate.swift; path = EPCalendarPicker/SSSelectionDate.swift; sourceTree = "<group>"; };
 		D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSDatePickerDataTests.swift; sourceTree = "<group>"; };
 		F4C1C9B91BE7A305001AA643 /* EPCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EPCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
