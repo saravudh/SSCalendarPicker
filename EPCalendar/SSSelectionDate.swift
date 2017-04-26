@@ -34,19 +34,20 @@ public class SSSelectionDate {
     }
     public var delegate: SSSelectionDateChangeDelegate?
     
-    init(selectedDates: [Date]?, minDate: Date, maxDate: Date) {
+    init(departDate: Date?, returnDate: Date?, minDate: Date, maxDate: Date) {
         self.minDate = minDate
         self.maxDate = maxDate
-        if let _ = selectedDates {
-            for date in selectedDates! {
-                self.addDate(date)
-            }
+        if let _ = departDate {
+            self.departDate = departDate
+        }
+        
+        if let _ = returnDate {
+            self.returnDate = returnDate
         }
     }
     
-    convenience init(selectedDates: [Date]?) {
-        let hundredYearTimeInterval: Double = 60 * 60 * 24 * 365 * 100
-        self.init(selectedDates: selectedDates, minDate: Date(timeIntervalSinceNow: -hundredYearTimeInterval), maxDate: Date(timeIntervalSinceNow: hundredYearTimeInterval))
+    convenience init(minDate: Date, maxDate: Date) {
+        self.init(departDate: nil, returnDate: nil, minDate: minDate, maxDate: maxDate)
     }
     
     func removeDate(_ aDate: Date) {

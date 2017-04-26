@@ -21,7 +21,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     var startDate: Date = EPDefaults.startDate
     private var epCalendar: EPCalendarPicker?
 
-    open var selectionDate: SSSelectionDate = SSSelectionDate(selectedDates: nil)
+    open var selectionDate: SSSelectionDate
 
     @IBOutlet weak var lblFirst: UILabel!
     @IBOutlet weak var lblSecond: UILabel!
@@ -38,6 +38,12 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     @IBOutlet weak var btnDoneCoverView: UIView!
 
     @IBOutlet weak var btnHeight: NSLayoutConstraint!
+    required init?(coder aDecoder: NSCoder) {
+        let minDate = Date(year: 2017, month: 1, day: 1)
+        let maxDate = Date(year: 2037, month: 12, day: 31)
+        selectionDate = SSSelectionDate(minDate: minDate, maxDate: maxDate)
+        super.init(coder: aDecoder)
+    }
     func dateDidChange() {
         if let beginDate = self.selectionDate.departDate {
             self.lblDepartDate.text = beginDate.dateString()
@@ -73,6 +79,12 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
         dismiss(animated: true, completion: nil)
     }
     
+    public func setSelected(date: (departDate: Date, returnDate: Date?)) {
+        let minDate = Date(year: startYear, month: startMonth, day: 1)
+        let maxDate = Date(year: endYear, month: 12, day: 31)
+        selectionDate = SSSelectionDate(departDate: date.departDate, returnDate: date.returnDate, minDate: minDate, maxDate: maxDate)
+    }
+
     internal func onTouchCancelButton() {
         //TODO: Create a cancel delegate
         calendarDelegate?.ssCalendarPicker(didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
@@ -120,7 +132,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     func inititlizeBarButtons(){
         self.btnDone.tintColor = UIColor.white
         self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self.epCalendar, action: #selector(onTouchCancelButton))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(onTouchCancelButton))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))

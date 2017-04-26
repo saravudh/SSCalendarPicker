@@ -23,6 +23,8 @@ class ViewController: UIViewController, SSCalendarPickerDelegate {
         calendarPicker.startDate = Date()
         calendarPicker.title = "Date PickerXX"
         
+        calendarPicker.setSelected(date :(departDate: Date(year: 2017, month: 4, day: 26), returnDate: Date(year: 2017, month: 4, day: 26)))
+        
         let navigationController = UINavigationController(rootViewController: calendarPicker)
         self.present(navigationController, animated: true, completion: nil)   
     }
