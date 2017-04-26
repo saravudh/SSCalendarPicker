@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, EPCalendarPickerDelegate {
+class ViewController: UIViewController, SSCalendarPickerDelegate {
 
     @IBOutlet weak var txtViewDetail: UITextView!
     @IBOutlet weak var btnShowMeCalendar: UIButton!
@@ -21,26 +21,19 @@ class ViewController: UIViewController, EPCalendarPickerDelegate {
         calendarPicker.startYear = 2016
         calendarPicker.endYear = 2017
         calendarPicker.startDate = Date()
-        calendarPicker.title = "Date Picker"
-
-        
-        
-        
-        
-//        calendarPicker.backgroundImage = UIImage(named: "background_image")
-//        calendarPicker.backgroundColor = UIColor.blueColor()
+        calendarPicker.title = "Date PickerXX"
         
         let navigationController = UINavigationController(rootViewController: calendarPicker)
         self.present(navigationController, animated: true, completion: nil)   
     }
     
-    func epCalendarPicker(_: EPCalendarPicker, didCancel error : NSError) {
+    func ssCalendarPicker(didCancel error : NSError) {
         txtViewDetail.text = "User cancelled selection"
         
     }
 
-    func epCalendarPicker(_: EPCalendarPicker, didSelectDate dates : (begin: Date, end: Date?)?) {
-        txtViewDetail.text = "User selected dates: \n\(String(describing: dates?.begin)) : \(String(describing: dates?.end))"
+    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)?) {
+        txtViewDetail.text = "User selected dates: \n\(String(describing: dates?.departDate)) : \(String(describing: dates?.returnDate))"
     }
 
 }

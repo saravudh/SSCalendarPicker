@@ -8,8 +8,13 @@
 
 import UIKit
 
+public protocol SSCalendarPickerDelegate{
+    func ssCalendarPicker(didCancel error : NSError)
+    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)?)
+}
+
 class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
-    var calendarDelegate: EPCalendarPickerDelegate?
+    var calendarDelegate: SSCalendarPickerDelegate?
     var startMonth: Int = EPDefaults.startMonth
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
@@ -64,6 +69,13 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     }
     
     @IBAction func btnDoneAction(_ sender: UIButton) {
+        calendarDelegate?.ssCalendarPicker(didSelectDate: (departDate:self.selectionDate.departDate!, returnDate:self.selectionDate.returnDate))
+        dismiss(animated: true, completion: nil)
+    }
+    
+    internal func onTouchCancelButton() {
+        //TODO: Create a cancel delegate
+        calendarDelegate?.ssCalendarPicker(didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
         dismiss(animated: true, completion: nil)
     }
     
@@ -86,13 +98,11 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EPCalendarPickerSegue" {
             if let calendarPicker = segue.destination as? EPCalendarPicker {
-                
                 self.selectionDate.delegate = self
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
                 self.refreshDoneButton()
                 calendarPicker.inititlizeProperties(startMonth: self.startMonth, startYear: self.startYear, endYear: self.endYear)
-                calendarPicker.calendarDelegate = self.calendarDelegate
                 calendarPicker.startDate = self.startDate
                 calendarPicker.hightlightsToday = true
                 calendarPicker.hideDaysFromOtherMonth = true
@@ -110,7 +120,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
     func inititlizeBarButtons(){
         self.btnDone.tintColor = UIColor.white
         self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchCancelButton))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self.epCalendar, action: #selector(onTouchCancelButton))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))

@@ -11,15 +11,8 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-public protocol EPCalendarPickerDelegate{
-    func epCalendarPicker(_: EPCalendarPicker, didCancel error : NSError)
-    func epCalendarPicker(_: EPCalendarPicker, didSelectDate dates : (begin: Date, end: Date?)?)
-}
-
 open class EPCalendarPicker: UICollectionViewController {
 
-    open var calendarDelegate : EPCalendarPickerDelegate?
-    
     open var dayDisabledTintColor: UIColor
     open var monthTitleColor: UIColor
     
@@ -245,12 +238,6 @@ open class EPCalendarPicker: UICollectionViewController {
     }
     
     //MARK: Button Actions
-    
-    internal func onTouchCancelButton() {
-       //TODO: Create a cancel delegate
-        calendarDelegate?.epCalendarPicker(self, didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
-        dismiss(animated: true, completion: nil)
-    }
 
     internal func onTouchTodayButton() {
         scrollToToday()
