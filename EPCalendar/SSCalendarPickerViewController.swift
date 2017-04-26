@@ -51,6 +51,18 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
         self.refreshDoneButton()
     }
     
+    @IBAction func btnDepartAction(_ sender: UIButton) {
+        if let departDate = self.selectionDate.departDate {
+            self.epCalendar?.scrollToMonthForDate(departDate)
+        }
+    }
+    
+    @IBAction func btnReturnAction(_ sender: UIButton) {
+        if let returnDate = self.selectionDate.returnDate {
+            self.epCalendar?.scrollToMonthForDate(returnDate)
+        }
+    }
+    
     @IBAction func btnDoneAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }

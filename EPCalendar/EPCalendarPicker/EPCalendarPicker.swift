@@ -262,7 +262,6 @@ open class EPCalendarPicker: UICollectionViewController {
     }
     
     open func scrollToMonthForDate (_ date: Date) {
-
         let month = date.month()
         let year = date.year()
         let section = ((year - startYear) * 12) + (month - startMonth + 1)

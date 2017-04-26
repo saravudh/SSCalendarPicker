@@ -24,7 +24,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jn6-VQ-Mx0">
                                 <rect key="frame" x="0.0" y="20" width="375" height="80"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kia-Rj-5aN" userLabel="DepartStack">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hoA-9B-wdw">
+                                        <rect key="frame" x="10" y="8" width="160" height="36"/>
+                                        <connections>
+                                            <action selector="btnDepartAction:" destination="mvE-qi-VFR" eventType="touchUpInside" id="Vfe-2d-Hqe"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kia-Rj-5aN" userLabel="DepartStack">
                                         <rect key="frame" x="10" y="8" width="160" height="36"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Depart" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1j-rU-4cB">
@@ -44,7 +50,13 @@
                                             <constraint firstAttribute="width" constant="160" id="BJD-44-4MH"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C1d-yS-T6j" userLabel="ReturnStack">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QTx-cR-nkj">
+                                        <rect key="frame" x="205" y="8" width="160" height="36"/>
+                                        <connections>
+                                            <action selector="btnReturnAction:" destination="mvE-qi-VFR" eventType="touchUpInside" id="opZ-5n-eqM"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C1d-yS-T6j" userLabel="ReturnStack">
                                         <rect key="frame" x="205" y="8" width="160" height="36"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpN-P1-Sn1">
@@ -151,13 +163,21 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="QTx-cR-nkj" firstAttribute="height" secondItem="C1d-yS-T6j" secondAttribute="height" id="1cc-C0-eyi"/>
+                                    <constraint firstItem="hoA-9B-wdw" firstAttribute="centerX" secondItem="kia-Rj-5aN" secondAttribute="centerX" id="5uD-7B-UGG"/>
+                                    <constraint firstItem="hoA-9B-wdw" firstAttribute="height" secondItem="kia-Rj-5aN" secondAttribute="height" id="70K-Wh-XvK"/>
+                                    <constraint firstItem="QTx-cR-nkj" firstAttribute="width" secondItem="C1d-yS-T6j" secondAttribute="width" id="AGc-UT-ySh"/>
+                                    <constraint firstItem="QTx-cR-nkj" firstAttribute="centerX" secondItem="C1d-yS-T6j" secondAttribute="centerX" id="Ag7-Yz-3b8"/>
                                     <constraint firstItem="kia-Rj-5aN" firstAttribute="top" secondItem="Jn6-VQ-Mx0" secondAttribute="top" constant="8" id="DVq-Zu-fQB"/>
+                                    <constraint firstItem="hoA-9B-wdw" firstAttribute="width" secondItem="kia-Rj-5aN" secondAttribute="width" id="Da8-7N-gtg"/>
                                     <constraint firstAttribute="trailing" secondItem="Xzy-Iu-jHQ" secondAttribute="trailing" id="HBN-uU-swU"/>
+                                    <constraint firstItem="QTx-cR-nkj" firstAttribute="centerY" secondItem="C1d-yS-T6j" secondAttribute="centerY" id="IJ6-2D-tVy"/>
                                     <constraint firstAttribute="trailing" secondItem="C1d-yS-T6j" secondAttribute="trailing" constant="10" id="PCW-HE-MMd"/>
                                     <constraint firstAttribute="height" constant="80" id="hOj-Gs-fqG"/>
                                     <constraint firstItem="kia-Rj-5aN" firstAttribute="leading" secondItem="Jn6-VQ-Mx0" secondAttribute="leading" constant="10" id="hW7-pm-Fa3"/>
                                     <constraint firstItem="C1d-yS-T6j" firstAttribute="top" secondItem="Jn6-VQ-Mx0" secondAttribute="top" constant="8" id="knT-Oo-cVt"/>
                                     <constraint firstAttribute="bottom" secondItem="Xzy-Iu-jHQ" secondAttribute="bottom" id="m1w-js-bQE"/>
+                                    <constraint firstItem="hoA-9B-wdw" firstAttribute="centerY" secondItem="kia-Rj-5aN" secondAttribute="centerY" id="qf7-ze-lNI"/>
                                     <constraint firstItem="Xzy-Iu-jHQ" firstAttribute="leading" secondItem="Jn6-VQ-Mx0" secondAttribute="leading" id="xAd-Dj-CW2"/>
                                 </constraints>
                             </view>
@@ -173,7 +193,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kU-Wl-dze">
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="60"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="one way"/>
                                         <connections>
                                             <action selector="btnDoneAction:" destination="mvE-qi-VFR" eventType="touchUpInside" id="Aby-mD-LwU"/>
                                         </connections>
