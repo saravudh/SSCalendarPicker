@@ -17,7 +17,8 @@ class ViewController: UIViewController, EPCalendarPickerDelegate {
         let calendarPicker = UIStoryboard(name: "SSCalendarPicker", bundle: nil).instantiateInitialViewController() as! SSCalendarPickerViewController
         
         calendarPicker.calendarDelegate = self
-        calendarPicker.startYear = 2016
+        calendarPicker.startMonth = 3
+        calendarPicker.startYear = 2017
         calendarPicker.endYear = 2017
         calendarPicker.startDate = Date()
         calendarPicker.title = "Date Picker"

@@ -34,6 +34,7 @@ open class EPCalendarPicker: UICollectionViewController {
     var cover: SSCalendarPickerViewController?
     
     fileprivate(set) open var startYear: Int
+    fileprivate(set) open var startMonth: Int
     fileprivate(set) open var endYear: Int
     
     override open func viewDidLoad() {
@@ -74,7 +75,8 @@ open class EPCalendarPicker: UICollectionViewController {
         }
     }
 
-    public func inititlizeProperties(startYear: Int, endYear: Int) {
+    public func inititlizeProperties(startMonth: Int, startYear: Int, endYear: Int) {
+        self.startMonth = startMonth
         self.startYear = startYear
         self.endYear = endYear
     }
@@ -82,6 +84,7 @@ open class EPCalendarPicker: UICollectionViewController {
     required public init?(coder aDecoder: NSCoder) {
         self.startYear = EPDefaults.startYear
         self.endYear = EPDefaults.endYear
+        self.startMonth = EPDefaults.startMonth
 
         //Text color initializations
         self.barTintColor = EPDefaults.barTintColor
@@ -96,15 +99,15 @@ open class EPCalendarPicker: UICollectionViewController {
         // #warning Incomplete implementation, return the number of sections
         if startYear > endYear {
             return 0
+        } else {
+            let numberOfFirstYearMonths = (12 - self.startMonth) + 1
+            let numberOfMonths = 12 * (endYear - startYear) + numberOfFirstYearMonths
+            return numberOfMonths
         }
-        
-        let numberOfMonths = 12 * (endYear - startYear) + 12
-        return numberOfMonths
     }
 
-
     override open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let startDate = Date(year: startYear, month: 1, day: 1)
+        let startDate = self.startDateOfPicker()
         let firstDayOfMonth = startDate.dateByAddingMonths(section)
         let addingPrefixDaysWithMonthDyas = ( firstDayOfMonth.numberOfDaysInMonth() + firstDayOfMonth.weekday() - Calendar.current.firstWeekday )
         let addingSuffixDays = addingPrefixDaysWithMonthDyas%7
@@ -118,7 +121,7 @@ open class EPCalendarPicker: UICollectionViewController {
     override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EPCalendarCell1
         cell.todayTextColor = EPDefaults.tintColor
-        let calendarStartDate = Date(year:startYear, month: 1, day: 1)
+        let calendarStartDate = self.startDateOfPicker()
         let firstDayOfThisMonth = calendarStartDate.dateByAddingMonths(indexPath.section)
         let prefixDays = (firstDayOfThisMonth.weekday() - Calendar.current.firstWeekday)
         
@@ -211,7 +214,7 @@ open class EPCalendarPicker: UICollectionViewController {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath)
             let headerLblTitle = header.viewWithTag(101) as! UILabel
             
-            let startDate = Date(year: startYear, month: 1, day: 1)
+            let startDate = self.startDateOfPicker()
             let firstDayOfMonth = startDate.dateByAddingMonths(indexPath.section)
             
             headerLblTitle.text = firstDayOfMonth.monthNameFull()
@@ -220,6 +223,11 @@ open class EPCalendarPicker: UICollectionViewController {
             return header;
         }
         return UICollectionReusableView()
+    }
+    
+    private func startDateOfPicker() -> Date {
+        let startDate = Date(year: self.startYear, month: self.startMonth, day: 1)
+        return startDate
     }
 
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

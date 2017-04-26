@@ -10,6 +10,7 @@ import UIKit
 
 struct EPDefaults  {
     //Values
+    static let startMonth = 1
     static let startYear = 2015
     static let endYear = 2016
     static let startDate = Date(year : 2017, month : 1, day : 1)

@@ -10,6 +10,7 @@ import UIKit
 
 class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
     var calendarDelegate: EPCalendarPickerDelegate?
+    var startMonth: Int = EPDefaults.startMonth
     var startYear: Int = EPDefaults.startYear
     var endYear: Int = EPDefaults.endYear
     var startDate: Date = EPDefaults.startDate
@@ -58,7 +59,7 @@ class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDel
                 self.selectionDate.delegate = self
                 self.epCalendar = calendarPicker
                 inititlizeBarButtons()
-                calendarPicker.inititlizeProperties(startYear: self.startYear, endYear: self.endYear)
+                calendarPicker.inititlizeProperties(startMonth: self.startMonth, startYear: self.startYear, endYear: self.endYear)
                 calendarPicker.calendarDelegate = self.calendarDelegate
                 calendarPicker.startDate = self.startDate
                 calendarPicker.hightlightsToday = true
