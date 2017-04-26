@@ -13,7 +13,7 @@ public protocol SSCalendarPickerDelegate{
     func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)?)
 }
 
-class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
+open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
     var calendarDelegate: SSCalendarPickerDelegate?
     var startMonth: Int = EPDefaults.startMonth
     var startYear: Int = EPDefaults.startYear
