@@ -76,7 +76,7 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
     
     @IBAction func btnDoneAction(_ sender: UIButton) {
         calendarDelegate?.ssCalendarPicker(didSelectDate: (departDate:self.selectionDate.departDate!, returnDate:self.selectionDate.returnDate))
-        dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     public func setSelected(date: (departDate: Date, returnDate: Date?)) {
@@ -88,7 +88,7 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
     internal func onTouchCancelButton() {
         //TODO: Create a cancel delegate
         calendarDelegate?.ssCalendarPicker(didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
-        dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func setupColor() {
