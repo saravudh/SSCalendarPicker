@@ -29,13 +29,8 @@ class ViewController: UIViewController, SSCalendarPickerDelegate {
         self.present(navigationController, animated: true, completion: nil)   
     }
     
-    func ssCalendarPicker(didCancel error : NSError) {
-        txtViewDetail.text = "User cancelled selection"
-        
-    }
-
-    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)?) {
-        txtViewDetail.text = "User selected dates: \n\(String(describing: dates?.departDate)) : \(String(describing: dates?.returnDate))"
+    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)) {
+        txtViewDetail.text = "User selected dates: \n\(String(describing: dates.departDate)) : \(String(describing: dates.returnDate))"
     }
 
 }

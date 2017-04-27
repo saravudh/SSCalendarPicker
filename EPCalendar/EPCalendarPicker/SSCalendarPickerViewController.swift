@@ -126,7 +126,9 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
         self.btnDone.tintColor = UIColor.white
         self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
         self.navigationController?.navigationBar.topItem?.title = ""
-        let todayButton = UIBarButtonItem(image: UIImage(named: "today"), style: UIBarButtonItemStyle.plain, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchTodayButton))
+        let podBundle = Bundle(for: SSCalendarPickerViewController.self)
+        let todayImage = UIImage(named: "today", in: podBundle, compatibleWith: nil)
+        let todayButton = UIBarButtonItem(image: todayImage, style: UIBarButtonItemStyle.plain, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchTodayButton))
         todayButton.tintColor = EPDefaults.todayTintColor
         self.navigationItem.rightBarButtonItem = todayButton
     }
