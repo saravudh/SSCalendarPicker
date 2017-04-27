@@ -9,7 +9,6 @@
 import UIKit
 
 public protocol SSCalendarPickerDelegate{
-    func ssCalendarPicker(didCancel error : NSError)
     func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?))
 }
 
@@ -85,12 +84,6 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
         selectionDate = SSSelectionDate(departDate: date.departDate, returnDate: date.returnDate, minDate: minDate, maxDate: maxDate)
     }
 
-    internal func onTouchCancelButton() {
-        //TODO: Create a cancel delegate
-        calendarDelegate?.ssCalendarPicker(didCancel: NSError(domain: "EPCalendarPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
-        self.navigationController?.popViewController(animated: true)
-    }
-    
     func setupColor() {
         self.lblDepartDate.textColor = EPDefaults.tintColor
         self.lblReturnDate.textColor = EPDefaults.tintColor
@@ -132,9 +125,7 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
     func inititlizeBarButtons(){
         self.btnDone.tintColor = UIColor.white
         self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(onTouchCancelButton))
-        self.navigationItem.leftBarButtonItem = cancelButton
-        
+        self.navigationController?.navigationBar.topItem?.title = ""
         let todayButton = UIBarButtonItem(title: "Today", style: UIBarButtonItemStyle.plain, target: self.epCalendar, action:#selector(EPCalendarPicker.onTouchTodayButton))
         todayButton.tintColor = EPDefaults.todayTintColor
         self.navigationItem.rightBarButtonItem = todayButton
