@@ -11,6 +11,7 @@
 		D72087321EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */; };
 		D79623BC1EA5BAD000D3E53E /* SSSelectionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */; };
 		D7A240121EA334B6001A25CD /* SSDatePickerDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */; };
+		D7F221861EB1D6470030C742 /* icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7F221851EB1D6470030C742 /* icon.xcassets */; };
 		F4C1C9BD1BE7A306001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */; };
 		F4C1C9BF1BE7A306001AA643 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9BE1BE7A306001AA643 /* ViewController.swift */; };
 		F4C1C9C21BE7A306001AA643 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9C01BE7A306001AA643 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 		D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSCalendarPickerViewController.swift; path = EPCalendarPicker/SSCalendarPickerViewController.swift; sourceTree = "<group>"; };
 		D79623BB1EA5BAD000D3E53E /* SSSelectionDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSSelectionDate.swift; path = EPCalendarPicker/SSSelectionDate.swift; sourceTree = "<group>"; };
 		D7A240111EA334B6001A25CD /* SSDatePickerDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSDatePickerDataTests.swift; sourceTree = "<group>"; };
+		D7F221851EB1D6470030C742 /* icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = icon.xcassets; path = EPCalendarPicker/icon.xcassets; sourceTree = "<group>"; };
 		F4C1C9B91BE7A305001AA643 /* EPCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EPCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9BC1BE7A306001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4C1C9BE1BE7A306001AA643 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				D720872F1EAE1CB2004FBC09 /* SSCalendarPicker.storyboard */,
 				D72087311EAE1CCE004FBC09 /* SSCalendarPickerViewController.swift */,
 				F4C1C9DD1BE7A347001AA643 /* EPCalendarPicker.swift */,
+				D7F221851EB1D6470030C742 /* icon.xcassets */,
 			);
 			name = EPCalendarPicker;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				D72087301EAE1CB2004FBC09 /* SSCalendarPicker.storyboard in Resources */,
 				F4C1C9C41BE7A306001AA643 /* Assets.xcassets in Resources */,
 				F4C1C9C21BE7A306001AA643 /* Main.storyboard in Resources */,
+				D7F221861EB1D6470030C742 /* icon.xcassets in Resources */,
 				F4F542C31BF0864900749161 /* EPCalendarHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

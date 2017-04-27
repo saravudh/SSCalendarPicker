@@ -18,5 +18,5 @@ DESC
   s.requires_arc = true
   s.source_files = 'EPCalendar/EPCalendarPicker'
   s.frameworks = 'UIKit'
-  s.resources        = ["EPCalendar/EPCalendarPicker/EPCalendarCell1.xib", "EPCalendar/EPCalendarPicker/EPCalendarHeaderView.xib", "EPCalendar/EPCalendarPicker/SSCalendarPicker.storyboard"]
+  s.resources        = ["EPCalendar/EPCalendarPicker/EPCalendarCell1.xib", "EPCalendar/EPCalendarPicker/EPCalendarHeaderView.xib", "EPCalendar/EPCalendarPicker/SSCalendarPicker.storyboard", "EPCalendar/EPCalendarPicker/icon.xcassets"]
 end
