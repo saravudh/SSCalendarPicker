@@ -55,10 +55,11 @@ open class EPCalendarPicker: UICollectionViewController {
         self.collectionView!.register(UINib(nibName: "EPCalendarCell1", bundle: Bundle(for: EPCalendarPicker.self )), forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UINib(nibName: "EPCalendarHeaderView", bundle: Bundle(for: EPCalendarPicker.self )), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header")
         
-        DispatchQueue.main.async { () -> Void in
-            self.scrollToToday()
+        if let departDate = self.cover?.selectionDate.departDate {
+            DispatchQueue.main.async { () -> Void in
+                self.scrollToMonthForDate(departDate)
+            }
         }
-        
         if backgroundImage != nil {
             self.collectionView!.backgroundView =  UIImageView(image: backgroundImage)
         } else if backgroundColor != nil {
@@ -240,12 +241,8 @@ open class EPCalendarPicker: UICollectionViewController {
     //MARK: Button Actions
 
     internal func onTouchTodayButton() {
-        scrollToToday()
-    }
-    
-    open func scrollToToday () {
         let today = Date()
-        scrollToMonthForDate(today)
+        self.scrollToMonthForDate(today)
     }
     
     open func scrollToMonthForDate (_ date: Date) {

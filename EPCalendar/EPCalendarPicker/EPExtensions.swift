@@ -128,13 +128,13 @@ extension Date {
         return dateComponent.weekday!
     }
     
-    func month() -> Int {
+    public func month() -> Int {
         let calendar = Calendar.current
         let dateComponent = (calendar as NSCalendar).components(.month, from: self)
         return dateComponent.month!
     }
     
-    func year() -> Int {
+    public func year() -> Int {
         let calendar = Calendar.current
         let dateComponent = (calendar as NSCalendar).components(.year, from: self)
         return dateComponent.year!

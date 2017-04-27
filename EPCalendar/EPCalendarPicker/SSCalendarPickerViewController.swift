@@ -10,7 +10,7 @@ import UIKit
 
 public protocol SSCalendarPickerDelegate{
     func ssCalendarPicker(didCancel error : NSError)
-    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?)?)
+    func ssCalendarPicker(didSelectDate dates : (departDate: Date, returnDate: Date?))
 }
 
 open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChangeDelegate {
