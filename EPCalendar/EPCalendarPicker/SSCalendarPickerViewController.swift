@@ -122,10 +122,14 @@ open class SSCalendarPickerViewController: UIViewController, SSSelectionDateChan
         }
     }
     
+    private func hideBackButtonTitle() {
+        self.navigationController?.navigationBar.topItem?.title = ""
+    }
+
     func inititlizeBarButtons(){
         self.btnDone.tintColor = UIColor.white
         self.btnDoneCoverView.backgroundColor = EPDefaults.tintColor
-        self.navigationController?.navigationBar.topItem?.title = ""
+        self.hideBackButtonTitle()
         let podBundle = Bundle(for: SSCalendarPickerViewController.self)
         let todayImage = UIImage(named: "today", in: podBundle, compatibleWith: nil)
         let todayButton = UIBarButtonItem(image: todayImage, style: UIBarButtonItemStyle.plain, target: self.epCalendar, action: #selector(EPCalendarPicker.onTouchTodayButton))
