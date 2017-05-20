@@ -142,7 +142,15 @@ class SSDatePickerDataTests: XCTestCase {
         let rangeDate61 = selectionDate.rangeDate!
         XCTAssertEqual(date2, rangeDate61.departDate)
         XCTAssertNil(rangeDate61.returnDate)
-        
+
+        // [7] add date1 and date1
+        selectionDate.removeAll()
+        XCTAssertFalse(selectionDate.hasData())
+        selectionDate.addDate(date1)
+        selectionDate.addDate(date1)
+        let rangeDate7 = selectionDate.rangeDate!
+        XCTAssertEqual(date1, rangeDate7.departDate)
+        XCTAssertEqual(date1, rangeDate7.returnDate)
     }
     
     func testRangeRemoveData() {

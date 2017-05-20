@@ -64,7 +64,7 @@ public class SSSelectionDate {
                 if self.returnDate == nil {
                     if aDate < departDate {
                         self.departDate = aDate
-                    } else if aDate > departDate {
+                    } else if aDate >= departDate {
                         self.returnDate = aDate
                     }
                 } else {
