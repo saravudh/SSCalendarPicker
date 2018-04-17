@@ -26,15 +26,16 @@ open class EPCalendarPicker: UICollectionViewController {
     open var backgroundColor: UIColor?
     var cover: SSCalendarPickerViewController?
     
-    fileprivate(set) open var startYear: Int
-    fileprivate(set) open var startMonth: Int
-    fileprivate(set) open var endYear: Int
+    private(set) open var startYear: Int
+    private(set) open var startMonth: Int
+    private(set) open var endYear: Int
+    private var isFirstTimeOpenThisView: Bool = true
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         //Layout creation
         let layout = UICollectionViewFlowLayout()
-        
+        self.isFirstTimeOpenThisView = true
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 4
         layout.headerReferenceSize = EPDefaults.headerSize
@@ -227,7 +228,8 @@ open class EPCalendarPicker: UICollectionViewController {
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
         if cell.isCellSelectable! {
-            self.cover?.selectionDate.addDate(cell.currentDate)
+            self.cover?.selectionDate.addDate(cell.currentDate, isReplace: isFirstTimeOpenThisView)
+            self.isFirstTimeOpenThisView = false
             if let sectionBoundForVisibleItems = self.collectionView?.sectionBoundForVisibleItems(),
                 let lowerBound = sectionBoundForVisibleItems.lowerBound,
                 let upperBound = sectionBoundForVisibleItems.upperBound {

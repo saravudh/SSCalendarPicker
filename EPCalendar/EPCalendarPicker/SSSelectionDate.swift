@@ -58,8 +58,11 @@ public class SSSelectionDate {
         }
     }
     
-    func addDate(_ aDate: Date) {
-        if aDate >= self.minDate && aDate <= self.maxDate {
+    func addDate(_ aDate: Date, isReplace: Bool = false) {
+        if isReplace {
+            self.departDate = aDate
+            self.returnDate = nil
+        } else if aDate >= self.minDate && aDate <= self.maxDate {
             if let departDate = self.departDate {
                 if self.returnDate == nil {
                     if aDate < departDate {
