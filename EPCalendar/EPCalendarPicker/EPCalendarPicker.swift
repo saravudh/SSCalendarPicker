@@ -44,7 +44,7 @@ open class EPCalendarPicker: UICollectionViewController {
         // setup Navigationbar
         self.navigationController?.navigationBar.tintColor = EPDefaults.tintColor
         self.navigationController?.navigationBar.barTintColor = self.barTintColor
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: EPDefaults.tintColor]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: EPDefaults.tintColor]
 
         // setup collectionview
         self.collectionView?.delegate = self
@@ -242,7 +242,7 @@ open class EPCalendarPicker: UICollectionViewController {
     
     //MARK: Button Actions
 
-    internal func onTouchTodayButton() {
+    @objc internal func onTouchTodayButton() {
         let today = Date()
         self.scrollToMonthForDate(today)
     }
